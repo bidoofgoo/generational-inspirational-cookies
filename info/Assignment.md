@@ -1,4 +1,4 @@
-# The Grat Bitwise Bake Off
+# The Great Bitwise Bake Off
 
 In this assignment you are required to build a recipe generator for cookies and/or cakes using an approach similar to the one explored in Tutorial 5: Simple PIERRE.
 

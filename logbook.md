@@ -1,0 +1,3 @@
+# Notes:
+
+- normalise ingridients amount.
