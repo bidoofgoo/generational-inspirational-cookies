@@ -10,21 +10,36 @@
  */
 
 const fs = require('fs');
+const YAML = require('yaml')
+
+/**
+ * If True, print databases and other info to the console.
+ */
+const LOG = false;
+
+const dir = '../data'
+
+const databases = {
+	foods: JSON.parse(fs.readFileSync(dir + '/food.json')).FoundationFoods,
+	foods2: JSON.parse(fs.readFileSync(dir + '/food2.json')).SurveyFoods,
+	cuisines: JSON.parse(fs.readFileSync(dir + '/cuisines.json')),
+	cocktails: YAML.parse(fs.readFileSync(dir + '/cocktails/cocktails.yaml', 'utf8'))
+}
 
 /**
  * Process food database.
  */
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*       F O O D       *');
+	console.log('* * * * * * * * * * * *');
+}
 
-console.log('* * * * * * * * * * * *');
-console.log('*       F O O D       *')
-console.log('* * * * * * * * * * * *');
 
-const foods = JSON.parse(fs.readFileSync('../data/food.json')).FoundationFoods;
+databases.foods.categories = new Set();
+databases.foods.ingredients = {};
 
-foods.categories = new Set();
-foods.ingredients = {};
-
-for (food of foods) {
+for (food of databases.foods) {
 
 	let descriptions = food.description.replace(/[\(\)]/g, '').split(', ');
 	let name = descriptions[0].toLowerCase();
@@ -32,21 +47,23 @@ for (food of foods) {
 	let tags = [];
 	for (i=1; i<descriptions.length; i++) tags.push(descriptions[i]);
 
-	foods.ingredients[name] = {
+	databases.foods.ingredients[name] = {
 		'tags': tags,
 		'class': food.foodClass,
 		//'nutrients': food.foodNutrients,
 		'category': food.foodCategory.description
 	};
 
-	foods.categories.add(food.foodCategory.description);
+	databases.foods.categories.add(food.foodCategory.description);
 
 }
 
-console.log('** CATEGORIES **');
-console.log(foods.categories);
-console.log('** INGREDIENTS **');
-console.log(foods.ingredients);
+if (LOG) {
+	console.log('** CATEGORIES **');
+	console.log(databases.foods.categories);
+	console.log('** INGREDIENTS **');
+	console.log(databases.foods.ingredients);
+}
 
 
 /**
@@ -57,16 +74,16 @@ console.log(foods.ingredients);
  * TO DO: check 'inputFoods' keys.
  */
 
-console.log('* * * * * * * * * * * *');
-console.log('*     F O O D 2       *')
-console.log('* * * * * * * * * * * *');
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*     F O O D 2       *');
+	console.log('* * * * * * * * * * * *');
+}
 
-const foods2 = JSON.parse(fs.readFileSync('../data/food2.json')).SurveyFoods;
+databases.foods2.categories = new Set()
+databases.foods2.ingredients = {};
 
-foods2.categories = new Set()
-foods2.ingredients = {};
-
-for (food of foods2) {
+for (food of databases.foods2) {
 
 	let descriptions = food.description.replace(/[\(\)]/g, '').split(', ');
 	let name = descriptions[0].toLowerCase();
@@ -74,7 +91,7 @@ for (food of foods2) {
 	let tags = [];
 	for (i=1; i<descriptions.length; i++) tags.push(descriptions[i]);
 
-	foods2.ingredients[name] = {
+	databases.foods2.ingredients[name] = {
 		'tags': tags,
 		'class': food.foodClass,
 		//'nutrients': food.foodNutrients,
@@ -82,14 +99,16 @@ for (food of foods2) {
 		'inputFoods': food.inputFoods
 	};
 
-	foods2.categories.add(food.wweiaFoodCategory.wweiaFoodCategoryDescription);
+	databases.foods2.categories.add(food.wweiaFoodCategory.wweiaFoodCategoryDescription);
 
 }
 
-console.log('** CATEGORIES **');
-console.log(foods2.categories);
-console.log('** INGREDIENTS **');
-console.log(foods2.ingredients);
+if (LOG) {
+	console.log('** CATEGORIES **');
+	console.log(databases.foods2.categories);
+	console.log('** INGREDIENTS **');
+	console.log(databases.foods2.ingredients);
+}
 
 
 /**
@@ -102,23 +121,38 @@ console.log(foods2.ingredients);
  * TO DO: check 'inputFoods' keys.
  */
 
-console.log('* * * * * * * * * * * *');
-console.log('*    C U I S I N E    *');
-console.log('* * * * * * * * * * * *');
-
-console.log()
-
-const cuisines = JSON.parse(fs.readFileSync('../data/cuisines.json'));
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*    C U I S I N E    *');
+	console.log('* * * * * * * * * * * *');
+}
 
 const ingredients = new Set();
 
-for (cuisine of cuisines) {
+for (cuisine of databases.cuisines) {
 
 	for (ingredient of cuisine.ingredients) ingredients.add(ingredient);
 
 }
 
-console.log('**** CUISINE ****');
-console.log(cuisines);
-console.log('** INGREDIENTS **');
-console.log(ingredients);
+if (LOG) {
+	console.log('**** CUISINE ****');
+	console.log(databases.cuisines);
+	console.log('** INGREDIENTS **');
+	console.log(ingredients);
+}
+
+
+/**
+ * Processing cocktails database
+ * Database of cokctails with:
+ * - timing,
+ * - taste,
+ * - ingredients (array),
+ * - preparation
+ */
+
+if (LOG) {
+	console.log('*** COCKTAILS ***');
+	console.log(databases.cocktails);
+}

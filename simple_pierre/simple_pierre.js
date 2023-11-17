@@ -272,8 +272,8 @@ function generateRecipes(size, population) {
 		let r2 = selectRecipe(population);
 
 		// apply modifications
-		let r = crossoverRecipes(r1, r2);
-		mutateRecipe(r);
+		let r = crossoverRecipes(r1, r2);	// crossover
+		mutateRecipe(r);					// mutation
 		
 		// normalise
 		normaliseRecipe(r);
