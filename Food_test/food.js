@@ -15,6 +15,10 @@ const fs = require('fs');
  * Process food database.
  */
 
+console.log('* * * * * * * * * * * *');
+console.log('*       F O O D       *')
+console.log('* * * * * * * * * * * *');
+
 const foods = JSON.parse(fs.readFileSync('../data/food.json')).FoundationFoods;
 
 foods.categories = new Set();
@@ -39,7 +43,9 @@ for (food of foods) {
 
 }
 
+console.log('** CATEGORIES **');
 console.log(foods.categories);
+console.log('** INGREDIENTS **');
 console.log(foods.ingredients);
 
 
@@ -50,6 +56,10 @@ console.log(foods.ingredients);
  *
  * TO DO: check 'inputFoods' keys.
  */
+
+console.log('* * * * * * * * * * * *');
+console.log('*     F O O D 2       *')
+console.log('* * * * * * * * * * * *');
 
 const foods2 = JSON.parse(fs.readFileSync('../data/food2.json')).SurveyFoods;
 
@@ -76,7 +86,9 @@ for (food of foods2) {
 
 }
 
+console.log('** CATEGORIES **');
 console.log(foods2.categories);
+console.log('** INGREDIENTS **');
 console.log(foods2.ingredients);
 
 
@@ -90,6 +102,12 @@ console.log(foods2.ingredients);
  * TO DO: check 'inputFoods' keys.
  */
 
+console.log('* * * * * * * * * * * *');
+console.log('*    C U I S I N E    *');
+console.log('* * * * * * * * * * * *');
+
+console.log()
+
 const cuisines = JSON.parse(fs.readFileSync('../data/cuisines.json'));
 
 const ingredients = new Set();
@@ -100,5 +118,7 @@ for (cuisine of cuisines) {
 
 }
 
-console.log(cuisines)
+console.log('**** CUISINE ****');
+console.log(cuisines);
+console.log('** INGREDIENTS **');
 console.log(ingredients);
