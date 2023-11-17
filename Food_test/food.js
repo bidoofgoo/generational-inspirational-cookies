@@ -17,13 +17,22 @@ const YAML = require('yaml')
  */
 const LOG = false;
 
-const dir = '../data'
+const input_dir = '../data'
+const output_directory = '../data/results';
 
 const databases = {
-	foods: JSON.parse(fs.readFileSync(dir + '/food.json')).FoundationFoods,
-	foods2: JSON.parse(fs.readFileSync(dir + '/food2.json')).SurveyFoods,
-	cuisines: JSON.parse(fs.readFileSync(dir + '/cuisines.json')),
-	cocktails: YAML.parse(fs.readFileSync(dir + '/cocktails/cocktails.yaml', 'utf8'))
+
+	// JSON/YAML files
+	foods: JSON.parse(fs.readFileSync(input_dir + '/food.json')).FoundationFoods,
+	foods2: JSON.parse(fs.readFileSync(input_dir + '/food2.json')).SurveyFoods,
+	cuisines: JSON.parse(fs.readFileSync(input_dir + '/cuisines.json')),
+	cocktails: YAML.parse(fs.readFileSync(input_dir + '/cocktails/cocktails.yaml', 'utf8')),
+
+	// above but parsed
+	ingredients: [],
+	categories: new Set(),
+	nutrients: new Set()
+
 }
 
 /**
@@ -35,9 +44,55 @@ if (LOG) {
 	console.log('* * * * * * * * * * * *');
 }
 
+/**
+ * Convenience class for reporting nutrients.
+ */
+class Nutrient {
 
-databases.foods.categories = new Set();
-databases.foods.ingredients = {};
+	constructor(name, amount, unit) {
+
+		if (!(typeof name == 'string')) throw Error("Nutrient's name must be a string.");
+		if (!(typeof amount == 'number')) throw Error("Nutrient's amount must be a number.");
+		if (!(typeof unit == 'string')) throw Error("Nutrient's unit must be a string.");		
+
+		this.name = name;
+		this.amount = amount;
+		this.unit = unit;
+
+	}
+
+}
+
+
+/**
+ * Convenience class for reporting cookie's ingredients.
+ */
+class Ingredient {
+
+	constructor(name, tags, nutrients, category) {
+
+		if (!(typeof name == 'string')) throw Error("Ingredient's name must be a string.");
+		if (!Array.isArray(tags)) throw Error("Ingredient's tags must be an array.");
+		if (!Array.isArray(nutrients)) throw Error("Ingredient's nutrients must be an array of _Nutrient.");
+		if (!(typeof category == 'string')) throw Error("Ingredient's category must be a string.");
+
+		this.name = name;
+		this.tags = tags;
+		this.nutrients = nutrients; // array of Nutrients.
+		this.category = category;
+
+	}
+
+}
+
+
+/**
+ * Process foods database.
+ * This database is similar to the previous one
+ * but is richer and more detailed.
+ *
+ * TO DO: check 'inputFoods' keys.
+ */
 
 for (food of databases.foods) {
 
@@ -47,14 +102,23 @@ for (food of databases.foods) {
 	let tags = [];
 	for (i=1; i<descriptions.length; i++) tags.push(descriptions[i]);
 
-	databases.foods.ingredients[name] = {
-		'tags': tags,
-		'class': food.foodClass,
-		//'nutrients': food.foodNutrients,
-		'category': food.foodCategory.description
-	};
+	let nutrients = [];
+	for (nutrient of food.foodNutrients) if (nutrient.amount && nutrient.unit) {
 
-	databases.foods.categories.add(food.foodCategory.description);
+		databases.nutrients.add(nutrient.nutrient.name);
+
+		nutrients.push(new Nutrient(
+			nutrient.nutrient.name,
+			nutrient.amount,
+			nutrient.unit));
+
+	}
+
+	databases.ingredients.push(new Ingredient(name, tags, nutrients, food.foodCategory.description));
+
+	databases.categories.add(food.foodCategory.description);
+
+	break;
 
 }
 
@@ -63,11 +127,13 @@ if (LOG) {
 	console.log(databases.foods.categories);
 	console.log('** INGREDIENTS **');
 	console.log(databases.foods.ingredients);
+	console.log('** NUTRIENTS **');
+	console.log(databases.foods.nutrients);
 }
 
 
 /**
- * Process food2 database.
+ * Process foods2 database.
  * This database is similar to the previous one
  * but is richer and more detailed.
  *
@@ -80,9 +146,6 @@ if (LOG) {
 	console.log('* * * * * * * * * * * *');
 }
 
-databases.foods2.categories = new Set()
-databases.foods2.ingredients = {};
-
 for (food of databases.foods2) {
 
 	let descriptions = food.description.replace(/[\(\)]/g, '').split(', ');
@@ -91,15 +154,21 @@ for (food of databases.foods2) {
 	let tags = [];
 	for (i=1; i<descriptions.length; i++) tags.push(descriptions[i]);
 
-	databases.foods2.ingredients[name] = {
-		'tags': tags,
-		'class': food.foodClass,
-		//'nutrients': food.foodNutrients,
-		'category': food.wweiaFoodCategory.wweiaFoodCategoryDescription,
-		'inputFoods': food.inputFoods
-	};
+	let nutrients = [];
+	for (nutrient of food.foodNutrients) if (nutrient.amount && nutrient.unit) {
 
-	databases.foods2.categories.add(food.wweiaFoodCategory.wweiaFoodCategoryDescription);
+		databases.nutrients.add(nutrient.nutrient.name);
+
+		nutrients.push(new Nutrient(
+			nutrient.nutrient.name,
+			nutrient.amount,
+			nutrient.unit));
+
+	}
+
+	databases.ingredients.push(new Ingredient(name, tags, nutrients, food.wweiaFoodCategory.wweiaFoodCategoryDescription))
+
+	databases.categories.add(food.wweiaFoodCategory.wweiaFoodCategoryDescription);
 
 }
 
@@ -108,6 +177,8 @@ if (LOG) {
 	console.log(databases.foods2.categories);
 	console.log('** INGREDIENTS **');
 	console.log(databases.foods2.ingredients);
+	console.log('** NUTRIENTS **');
+	console.log(databases.foods2.nutrients);
 }
 
 
@@ -156,3 +227,11 @@ if (LOG) {
 	console.log('*** COCKTAILS ***');
 	console.log(databases.cocktails);
 }
+
+/**
+ * Write the transform database results to the file.
+ */
+
+fs.writeFileSync(output_directory + '/ingredients.json', JSON.stringify(databases.ingredients));
+fs.writeFileSync(output_directory + '/categories.json', [...databases.categories].join(', '));
+fs.writeFileSync(output_directory + '/nutrients.json', [...databases.nutrients].join(', '));
