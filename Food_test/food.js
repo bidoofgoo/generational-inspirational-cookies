@@ -12,22 +12,29 @@
 const fs = require('fs');
 const YAML = require('yaml')
 
+/**
+ * If True, print databases and other info to the console.
+ */
+const LOG = false;
+
 const dir = '../data'
 
 const databases = {
 	foods: JSON.parse(fs.readFileSync(dir + '/food.json')).FoundationFoods,
 	foods2: JSON.parse(fs.readFileSync(dir + '/food2.json')).SurveyFoods,
 	cuisines: JSON.parse(fs.readFileSync(dir + '/cuisines.json')),
-	cocktails: YAML.parse(dir + '/cocktails/cocktails.yaml')
+	cocktails: YAML.parse(fs.readFileSync(dir + '/cocktails/cocktails.yaml', 'utf8'))
 }
 
 /**
  * Process food database.
  */
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*       F O O D       *');
+	console.log('* * * * * * * * * * * *');
+}
 
-console.log('* * * * * * * * * * * *');
-console.log('*       F O O D       *')
-console.log('* * * * * * * * * * * *');
 
 databases.foods.categories = new Set();
 databases.foods.ingredients = {};
@@ -51,10 +58,12 @@ for (food of databases.foods) {
 
 }
 
-console.log('** CATEGORIES **');
-console.log(databases.foods.categories);
-console.log('** INGREDIENTS **');
-console.log(databases.foods.ingredients);
+if (LOG) {
+	console.log('** CATEGORIES **');
+	console.log(databases.foods.categories);
+	console.log('** INGREDIENTS **');
+	console.log(databases.foods.ingredients);
+}
 
 
 /**
@@ -65,9 +74,11 @@ console.log(databases.foods.ingredients);
  * TO DO: check 'inputFoods' keys.
  */
 
-console.log('* * * * * * * * * * * *');
-console.log('*     F O O D 2       *')
-console.log('* * * * * * * * * * * *');
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*     F O O D 2       *');
+	console.log('* * * * * * * * * * * *');
+}
 
 databases.foods2.categories = new Set()
 databases.foods2.ingredients = {};
@@ -92,10 +103,12 @@ for (food of databases.foods2) {
 
 }
 
-console.log('** CATEGORIES **');
-console.log(databases.foods2.categories);
-console.log('** INGREDIENTS **');
-console.log(databases.foods2.ingredients);
+if (LOG) {
+	console.log('** CATEGORIES **');
+	console.log(databases.foods2.categories);
+	console.log('** INGREDIENTS **');
+	console.log(databases.foods2.ingredients);
+}
 
 
 /**
@@ -108,9 +121,11 @@ console.log(databases.foods2.ingredients);
  * TO DO: check 'inputFoods' keys.
  */
 
-console.log('* * * * * * * * * * * *');
-console.log('*    C U I S I N E    *');
-console.log('* * * * * * * * * * * *');
+if (LOG) {
+	console.log('* * * * * * * * * * * *');
+	console.log('*    C U I S I N E    *');
+	console.log('* * * * * * * * * * * *');
+}
 
 const ingredients = new Set();
 
@@ -120,10 +135,12 @@ for (cuisine of databases.cuisines) {
 
 }
 
-console.log('**** CUISINE ****');
-console.log(databases.cuisines);
-console.log('** INGREDIENTS **');
-console.log(ingredients);
+if (LOG) {
+	console.log('**** CUISINE ****');
+	console.log(databases.cuisines);
+	console.log('** INGREDIENTS **');
+	console.log(ingredients);
+}
 
 
 /**
@@ -135,3 +152,7 @@ console.log(ingredients);
  * - preparation
  */
 
+if (LOG) {
+	console.log('*** COCKTAILS ***');
+	console.log(databases.cocktails);
+}
