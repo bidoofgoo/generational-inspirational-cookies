@@ -31,7 +31,8 @@ const databases = {
 	// above but parsed
 	ingredients: [],
 	categories: new Set(),
-	nutrients: new Set()
+	nutrients: new Set(),
+	units: new Set(),
 
 }
 
@@ -108,6 +109,7 @@ for (food of databases.foods) {
 	for (nutrient of food.foodNutrients) if (nutrient.amount) {
 
 		databases.nutrients.add(nutrient.nutrient.name);
+		databases.units.add(nutrient.nutrient.unitName);
 
 		ingredient.nutrients.push(new Nutrient(
 			nutrient.nutrient.name,
@@ -162,6 +164,7 @@ for (food of databases.foods2) {
 	for (nutrient of food.foodNutrients) if (nutrient.amount) {
 
 		databases.nutrients.add(nutrient.nutrient.name);
+		databases.units.add(nutrient.nutrient.unitName);
 
 		ingredient.nutrients.push(new Nutrient(
 			nutrient.nutrient.name,
@@ -239,3 +242,4 @@ if (LOG) {
 fs.writeFileSync(output_directory + '/ingredients.json', JSON.stringify(databases.ingredients));
 fs.writeFileSync(output_directory + '/categories.txt', [...databases.categories].join('\n'));
 fs.writeFileSync(output_directory + '/nutrients.txt', [...databases.nutrients].join('\n'));
+fs.writeFileSync(output_directory + '/units.txt', [...databases.units].join('\n'), {encoding:'utf8'});
