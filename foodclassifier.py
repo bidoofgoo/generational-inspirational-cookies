@@ -1,4 +1,9 @@
 from transformers import pipeline
+import json
+
+
+classifier = pipeline("zero-shot-classification")
+
 
 candidate_labels = [
     "Base",
@@ -15,23 +20,32 @@ candidate_labels = [
     "Chemical Leaveners"
   ]
 
-ingredients = [
+  ingredients = [
     "Flour",
     "Milk",
     "Baking soda",
     "Grandfathrers ashes"
 ]
 
-classifier = pipeline("zero-shot-classification")
-    
+
+file = open("data/results/ingredients.json")
+
+ingredients = json.load(file)
+
+ingrednames = set()
+
+for ingred in ingredients:
+    ingrednames.add(ingred['name'])
+ingrednames
+
+
 classified = classifier(
-    ingredients,
+    list(ingrednames)[:1],
     candidate_labels=candidate_labels,
 )
 
-full_ingredients = {
 
-}
+full_ingredients = {}
 
 cutoffPoint = 0.125
 
@@ -39,5 +53,9 @@ for classi in classified:
     assignedClasses = []
     for i in range(len(classi["labels"])):
         label = classi["labels"][i]
-        probability = 
-    full_ingredients[classi["sequence"]] = {"categories" : assignedClasses}
+        probability = classi["scores"][i]
+        if(i == 0 or probability > cutoffPoint):
+            assignedClasses.append(label)
+    full_ingredients[classi["sequence"]] = {"cookiecat" : assignedClasses}
+
+full_ingredients
