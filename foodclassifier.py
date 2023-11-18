@@ -24,9 +24,20 @@ ingredients = [
 
 classifier = pipeline("zero-shot-classification")
     
-classes = classifier(
+classified = classifier(
     ingredients,
     candidate_labels=candidate_labels,
 )
 
-print(classes)
+full_ingredients = {
+
+}
+
+cutoffPoint = 0.125
+
+for classi in classified:
+    assignedClasses = []
+    for i in range(len(classi["labels"])):
+        label = classi["labels"][i]
+        probability = 
+    full_ingredients[classi["sequence"]] = {"categories" : assignedClasses}
