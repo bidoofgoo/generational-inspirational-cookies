@@ -53,9 +53,3 @@ for classi in classified:
     assignedClasses = []
     for i in range(len(classi["labels"])):
         label = classi["labels"][i]
-        probability = classi["scores"][i]
-        if(i == 0 or probability > cutoffPoint):
-            assignedClasses.append(label)
-    full_ingredients[classi["sequence"]] = {"cookiecat" : assignedClasses}
-
-full_ingredients
