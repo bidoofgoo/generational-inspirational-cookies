@@ -1,14 +1,13 @@
 INSPIRATION 
 
-- The aim is to produce cookie recipies using an AI-model 
-
-
-
-
-
+- The aim is to generate cookie recipies resembling as much as possible to a conventional cookie utilising ingredients from a database of over 6000 food products.
+- Each ingredient in datasets contains a nutrient in a quantity of 100mg.
+  
 PROCESS OF THE COOKIE RECIPE GENERATOR 
 
 Introduction 
+
+
 
 Database 
 
