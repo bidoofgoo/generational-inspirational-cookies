@@ -20,16 +20,16 @@ class Amount {
 
 	/**
 	 * Constructor already agreeing the unit with the hardcoded standard.
-	 * @param  {number} value [amount]
+	 * @param  {number} amount [amount]
 	 * @param  {string} unit  Name of the unit.
 	 */
-	constructor(value, unit) {
+	constructor(amount, unit) {
 
-		if (typeof value !== 'number') throw Error('Value argument must be a number.');
+		if (typeof amount !== 'number') throw Error('Amount argument must be a number.');
 		if (typeof unit !== 'string') throw Error('Unit must be in the form of a string.');
 		if (Amount.units.indexOf(unit) == -1) throw Error('Unknown unit.');
 
-		this.value = value;
+		this.amount = amount;
 		this.unit = unit;
 
 		this.agree();
@@ -44,17 +44,17 @@ class Amount {
 		switch (this.unit) {
 
 		case 'g':
-			this.value *= 100;
+			this.amount *= 100;
 			this.unit = 'µg';
 			break;
 
 		case 'mg':
-			this.value *= 10;
+			this.amount *= 10;
 			this.unit = 'µg';
 			break;
 
 		case 'kcal':
-			this.value *= 4.184;
+			this.amount *= 4.184;
 			this.unit = 'kJ';
 			break;
 
@@ -68,28 +68,106 @@ class Amount {
 
 	}
 
+	/**
+	 * Add another Amount object.
+	 * @param {Amount} amount [description]
+	 */
+	add(amount) {
+
+		if (!(amount instanceof Amount)) throw Error('amount must be of type Amount.');
+
+		if (this.unit != amount.unit) throw Error(`the added amount (in ${amount.unit}) must be of the same unit (${this.unit})`);
+
+		this.value += amount.value;
+
+	}
+
 }
 
 
 class Recipe {
 
-	static ingredients = JSON.parse(fs.readFileSync(data_path + '/ingredients.json'));
+	static ingredients = JSON.parse(fs.readFileSync(data_path + '/ingredients_roles.json'));
+	
+	static normalization = new Amount(100, 'g');
+
+	static bakingroles = [
+		"Base",
+		"Binding Agent",
+		"Leavening Agent",
+		"Fat",
+		"Sweetener",
+		"Flavorings",
+		"Add-ins",
+		"Seasoning",
+		"Texture Enhancers",
+		"Decorations/Toppings",
+		"Liquid",
+		"Chemical Leaveners"
+	];
+
 
 	constructor () {
 
-		this.ingredients = [];
+		this.ingredients = new Set(); // what about weight???
+		this.nutrients = {};
 		this.fitness = null;
 
 	}
 
+
 	randomizeIngredients() {
+
+		while (this.ingredients.size < 10) {
+
+			let randomId = Math.floor(Recipe.ingredients.length * Math.random());
+			let ingredient = Recipe.ingredients[randomId];
+
+			this.ingredients.add(ingredient);
+
+		}
+
+		//console.log(this.ingredients);
+
+	}
+
+
+	calcNutrients() {
+
+		for (let ingredient of this.ingredients) {
+
+			for (let nutrient of ingredient.nutrients) {
+
+				if (nutrient.name in this.nutrients) {
+
+					let amount = new Amount(nutrient.amount, nutrient.unit);
+					this.nutrients[nutrient.name].add(amount);
+
+				} else {
+
+					this.nutrients[nutrient.name] = new Amount(nutrient.amount, nutrient.unit);
+
+				}
+
+			}
+
+		}
 
 
 
 
 	}
 
+
+	calcFitness() {	
+
+	}
+
 }
+
+let test = new Recipe();
+test.randomizeIngredients();
+test.calcNutrients();
 
 
 /**
@@ -104,7 +182,7 @@ const population = {
 
 	initialize: function () {
 
-		for (i=0; i<this.size; i++) {
+		for (let i=0; i<this.size; i++) {
 
 			let recipe = new Recipe();
 			recipe.randomizeIngredients();

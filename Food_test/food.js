@@ -148,6 +148,8 @@ if (LOG) {
 	console.log('* * * * * * * * * * * *');
 }
 
+console.log(databases.foods[1].foodNutrients[1]);
+
 for (food of databases.foods2) {
 
 	let descriptions = food.description.replace(/[\(\)]/g, '').split(', ');
