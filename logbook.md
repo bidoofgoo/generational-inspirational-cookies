@@ -1,24 +1,23 @@
-# Notes:
+INSPIRATION 
 
-- normalise ingridients amount.
+- The aim is to produce cookie recipies using an AI-model 
 
 
-# Databases:
+
+
+
+PROCESS OF THE COOKIE RECIPE GENERATOR 
+
+Introduction 
+
+Database 
 
 [food][https://fdc.nal.usda.gov/download-datasets.html]
 [food2:][]
 [cuisines:][https://www.kaggle.com/datasets/kaggle/recipe-ingredients-dataset]
 
-
-Ideas:
-
-- we have databases... (of sausages)
-- mochi
-
-
-## Knowledgebase
-
-Food:
+- normalise ingridients amount.
+- Food:
 - category, tags
 
 Food2:
@@ -30,3 +29,30 @@ Cuisine:
 
 
 ## Mochi – cookie prototype
+
+Termination criterion 
+
+Process of presentation 
+
+Evaluation of Creativity 
+
+
+
+
+
+
+## Knowledgebase for the inspiring set 
+
+
+initialising the inspiring set 
+
+evaluation of the recipies - fitness fun
+
+generating recipes 
+
+crossover of recipies
+
+mutation of recipies 
+
+
+
