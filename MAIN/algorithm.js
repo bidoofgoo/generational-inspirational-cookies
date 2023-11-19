@@ -30,6 +30,13 @@ function deleteRandomElementFromSet(set) {
 	}
 
 	return returnSet;
+	
+}
+
+function ttt (set) {
+
+	assert(set instanceof Set, "Argument must be a Set.");
+
 }
 
 
@@ -237,7 +244,6 @@ class Recipe {
 
 		this.ingredients = new Set(); // what about weight???
 		this.nutrients = {};
-		this.fitness = 0;
 		this.novelty = 0;
 
 	}
@@ -284,7 +290,14 @@ class Recipe {
 
 		}
 
-		assert(Math.round(this.totalAmount().amount) == Math.round(Recipe.portion.amount))
+		console.log(this.ingredients)
+
+		let currentAmount = Math.round(this.totalAmount().amount);
+		let normalizedAmount = Math.round(Recipe.portion.amount);
+
+		assert(
+			currentAmount === normalizedAmount,
+			`The current portion ${currentAmount} does not sum to to ${normalizedAmount} normalized portion amount.`)
 		
 	}
 
@@ -309,8 +322,10 @@ class Recipe {
 		}
 	}
 
-	calcFitness() {	
+	get fitness() {	
+
 		let incurrentcookie = new Set();
+		
 		for (let role of Recipe.bakingroles) {
 			
 			for (let ingredient of this.ingredients) {
@@ -322,10 +337,13 @@ class Recipe {
 		}
 
 		return incurrentcookie.size
+		
 	}
 
-	calcNovelty(population){
+	calcNovelty(population) {
 		
+		return 
+
 	}
 	
 	/**
@@ -333,12 +351,12 @@ class Recipe {
 	 * ,replacing one of the ingredients]
 	 *
 	 */
-	mutate(){
+	mutate() {
 		
 		let randint = Math.floor(Math.random() * 4);
 
 		let curingreds = new Set(this.ingredients)
-		let randIngred = getRandomIngredient()
+		let randIngred = Recipe.getRandomIngredient()
 
 		switch(randint){
 			case 0:
@@ -391,55 +409,119 @@ const population = {
 
 		}
 
+		return this;
+		
 	},
 
 
-	makeNewGeneration: function(size, population) {
+	generateRecipes: function(size, population) {
 
 		let R = []; // generated recipes
 	
 		while (R.length < size) {
 	
 			// select two recipes based on fitness:
-			let r1 = selectRecipe(population);
-			let r2 = selectRecipe(population);
+			let r1 = this.selectRecipe(population);
+			let r2 = this.selectRecipe(population);
 	
 			// apply modifications
-			let r = crossoverRecipes(r1, r2);	// crossover
-			mutateRecipe(r);					// mutation
-			
-			// normalise
-			normaliseRecipe(r);
+			let r = Recipe.crossover(r1, r2);	// crossover
+			//r.mutate();					// mutation
 	
 			R.push(r);
 	
 		}
 	
-		evaluateRecipes(R);
+		this.evaluateRecipes(R);
 	
 		return R;
 	
 	},
 
+	evaluateRecipes: function (recipes) {
 
-	evolve : function() {
+		for (const recipe of recipes) {
+			
+			//recipe.fitness;
+			recipe.calcNovelty();
 
-		let R = generateRecipes(populationSize, population);
-		population = selectPopulation(population, R);
-	
-		history.push(population[0].fitness);
-	
-		console.log("max. fitness = " + history[history.length - 1]);
-	
-		let recipe_text = population[0].name + "\n";
-		for (let i of population[0].ingredients) {
-			recipe_text += "\n" + i.amount + i.unit + " " + i.ingredient;
 		}
 	
-		console.log(recipe_text);
+	},
+
+	selectRecipe: function (recipes) {
+
+		// calculate the fitness
+		let sum = this.recipes.reduce((a, r) => a + r.fitness, 0);
+		let fitness = Math.floor(Math.random * sum);
 	
+		// cheap randomisation using hash table unpredictability.
+		for (const recipe of recipes) {
+			if (fitness < recipe.fitness) return r;
+			fitness -= recipe.fitness;
+		}
+	
+		// emergency: return last if no one is fit enough.
+		return recipes[recipes.length - 1];
+	
+	},
+
+
+	evolve : function(generations) {
+
+		for (let index = 0; index < generations; index++) {
+			
+			console.log('GENERATION ' + index);
+
+			let R = this.generateRecipes(this.size, this.recipes);
+			this.recipes = this.selectPopulation(this.recipes, R);
+			
+		}
+
+		return this;
+	
+		// history.push(population[0].fitness);
+	
+		// console.log("max. fitness = " + history[history.length - 1]);
+	
+		// let recipe_text = population[0].name + "\n";
+		// for (let i of population[0].ingredients) {
+		// 	recipe_text += "\n" + i.amount + i.unit + " " + i.ingredient;
+		// }
+	
+		// console.log(recipe_text);
+	
+	},
+
+	selectPopulation: function(P /* Already sorted!!! */, R) {
+
+		// sort new generation R.
+		R.sort((a, b) => b.fitness - a.fitness);
+	
+		// concatenate fittest individuals from P and R.
+		P = P.slice(0, P.length/2).concat(R.slice(0, R.length/2));
+	
+		// sort the 'new' population
+		P.sort((a, b) => b.fitness - a.fitness);
+	
+		return P;
+	
+	},
+
+
+	report: function() {
+		
+		for (recipe of this.recipes) {
+			
+			//console.log(recipe);
+
+		}
+
 	}
 
-}.initialize();
+}
 
-
+population
+.initialize()
+.evolve(50)
+.report();
