@@ -202,6 +202,8 @@ if (LOG) {
  * TO DO: check 'inputFoods' keys.
  */
 
+
+/* NOT USED
 if (LOG) {
 	console.log('* * * * * * * * * * * *');
 	console.log('*    C U I S I N E    *');
@@ -222,7 +224,7 @@ if (LOG) {
 	console.log('** INGREDIENTS **');
 	console.log(ingredients);
 }
-
+*/
 
 /**
  * Processing cocktails database
@@ -233,10 +235,12 @@ if (LOG) {
  * - preparation
  */
 
+/* NOT USED
 if (LOG) {
 	console.log('*** COCKTAILS ***');
 	console.log(databases.cocktails);
 }
+*/
 
 /**
  * Write the transform database results to the file.

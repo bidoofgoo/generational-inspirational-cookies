@@ -1,0 +1,37 @@
+{
+  "TotalFat": {
+    "amount": 6,
+    "unit": "g",
+    "innutrients": ["Total fat (NLEA)"]
+  },
+  "Cholesterol": {
+    "amount": 25,
+    "unit": "mg",
+    "innutrients":["Cholesterol"]
+  },
+  "Sodium": {
+    "amount": 200,
+    "unit": "mg",
+    "innutrients":["Sodium, Na"]
+  },
+  "TotalCarbohydrates": {
+    "amount": 34,
+    "unit": "g",
+    "innutrients":["Carbohydrate, by summation"]
+  },
+  "DietaryFiber": {
+    "amount": 2,
+    "unit": "g",
+    "innutrients":["Total dietary fiber (AOAC 2011.25)", "Fiber, total dietary"]
+  },
+  "Sugars": {
+    "amount": 18,
+    "unit": "g",
+    "innutrients":["Sugars, Total", "Sugars, total including NLEA"]
+  },
+  "Protein": {
+    "amount": 4,
+    "unit": "g",
+    "innutrients":["Protein"]
+  }
+}
