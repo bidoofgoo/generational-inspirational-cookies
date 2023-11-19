@@ -9,8 +9,9 @@
  * TO DO: finish description!!!
  */
 
+const assert = require('assert');
 const fs = require('fs');
-const YAML = require('yaml')
+const YAML = require('yaml');
 
 /**
  * If True, print databases and other info to the console.
@@ -52,9 +53,9 @@ class Nutrient {
 
 	constructor(name, amount, unit) {
 
-		if (!(typeof name == 'string')) throw Error("Nutrient's name must be a string.");
-		if (!(typeof amount == 'number')) throw Error("Nutrient's amount must be a number.");
-		if (!(typeof unit == 'string')) throw Error("Nutrient's unit must be a string.");
+		assert(typeof name === 'string', "Nutrient's name must be a string.");
+		assert(typeof amount === 'number', "Nutrient's amount must be a number.");
+		assert(typeof unit === 'string', "Nutrient's unit must be a string.");
 
 		this.name = name;
 		this.amount = amount;
@@ -72,8 +73,8 @@ class Ingredient {
 
 	constructor(name, category) {
 
-		if (!(typeof name == 'string')) throw Error("Ingredient's name must be a string.");
-		if (!(typeof category == 'string')) throw Error("Ingredient's category must be a string.");
+		assert(typeof name === 'string', "Ingredient's name must be a string.");
+		assert(typeof category === 'string', "Ingredient's category must be a string.");
 
 		this.name = name;
 		this.tags = [];

@@ -1,3 +1,4 @@
+const assert = require('assert');
 const fs = require('fs');
 
 const data_path = '../data/results'
@@ -25,9 +26,10 @@ class Amount {
 	 */
 	constructor(amount, unit) {
 
-		if (typeof amount !== 'number') throw Error('Amount argument must be a number.');
-		if (typeof unit !== 'string') throw Error('Unit must be in the form of a string.');
-		if (Amount.units.indexOf(unit) == -1) throw Error('Unknown unit.');
+		assert(typeof amount === 'number', 'Amount argument must be a number.');
+		assert(typeof amount === 'number', 'Amount argument must be a number.');
+		assert(typeof unit === 'string', 'Unit must be in the form of a string.');
+		assert(Amount.units.indexOf(unit) > -1, 'Unknown unit.');
 
 		this.amount = amount;
 		this.unit = unit;
