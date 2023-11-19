@@ -12,25 +12,34 @@ const dataResults_path = data_path + '/results';
  */
 function deleteRandomElementFromSet(set) {
 
-	let returnSet = new Set(set);
+	let returnSet = new Set();
 
-	if (returnSet.size > 0) {
+	let index = Math.floor(Math.random() * set.size);
+	let original = Array.from(set);
 
-		let randomIndex = Math.floor(Math.random()*returnSet.size);
-		let i = 0;
-		
-		for(let item of returnSet) {
-		  if(i === randomIndex) {
-			returnSet.delete(item);
-			break;
-		  }
-		  i++;
-		}
+	for (let i=0; i< set.size; i++) {
+
+		if (i !== index) returnSet.add(original[i]);
 
 	}
 
 	return returnSet;
-	
+
+	// if (returnSet.size > 0) {
+
+	// 	let randomIndex = Math.floor(Math.random()*returnSet.size);
+	// 	let i = 0;
+		
+	// 	for(let item of returnSet) {
+	// 	  if(i === randomIndex) {
+	// 		returnSet.delete(item);
+	// 		break;
+	// 	  }
+	// 	  i++;
+	// 	}
+
+	// }
+
 }
 
 function ttt (set) {
@@ -220,23 +229,43 @@ class Recipe {
 
 		let newRecipe = new Recipe();
 
-		let i = 0;
-		for(let ingr in r1.ingredients){
-			if( i % 2 == 0){
-				newRecipe.ingredients.add(ingr)
+		let [r_smaller, r_bigger] = [r1, r2].sort((curr, prev) => curr.ingredients.size > curr.ingredients.size);
+
+		let in_smaller = Array.from(r_smaller.ingredients);
+		let in_bigger = Array.from(r_bigger.ingredients);
+
+		for (let i=0; i<in_bigger.length; i++) {
+
+			if (i < in_smaller.length) {
+
+				newRecipe.ingredients.add(i%2===0 ? in_bigger[i] : in_smaller[i]);
+
+			} else {
+				
+				newRecipe.ingredients.add(in_bigger[i]);
+
 			}
-			i++;
+			
 		}
 
-		i = 0;
-		for(let ingr in r2.ingredients){
-			if( i % 2 == 0){
-				newRecipe.ingredients.add(ingr)
-			}
-			i++
-		}
+		// let i = 0;
+		// for(let ingr of r1.ingredients){
+		// 	if( i % 2 == 0){
+		// 		newRecipe.ingredients.add(ingr)
+		// 	}
+		// 	i++;
+		// }
 
-		return newRecipe;
+		// i = 0;
+		// for(let ingr of r2.ingredients){
+		// 	if( i % 2 == 0){
+		// 		newRecipe.ingredients.add(ingr)
+		// 	}
+		// 	i++
+		// }
+
+		return r_bigger;
+
 	}
 
 
@@ -290,7 +319,7 @@ class Recipe {
 
 		}
 
-		console.log(this.ingredients)
+		// console.log(this.ingredients)
 
 		let currentAmount = Math.round(this.totalAmount().amount);
 		let normalizedAmount = Math.round(Recipe.portion.amount);
@@ -326,6 +355,7 @@ class Recipe {
 
 		let incurrentcookie = new Set();
 		
+		// assess baking roles of the ingredients
 		for (let role of Recipe.bakingroles) {
 			
 			for (let ingredient of this.ingredients) {
@@ -335,6 +365,8 @@ class Recipe {
 			}
 
 		}
+
+		// asses similarity to the prototypeCookie.
 
 		return incurrentcookie.size
 		
@@ -354,33 +386,57 @@ class Recipe {
 	mutate() {
 		
 		let randint = Math.floor(Math.random() * 4);
+		// let additionalCheck = Math.random > 0.5;
 
-		let curingreds = new Set(this.ingredients)
+		// let curingreds = new Set(this.ingredients)
+
 		let randIngred = Recipe.getRandomIngredient()
 
-		switch(randint){
+		switch (randint) {
+			
 			case 0:
-				if(curingreds.size > 0){
-					curingreds = deleteRandomElementFromSet(curingreds);
-				}//finish
+				if (this.ingredients.size > 1) {
+					this.ingredients = deleteRandomElementFromSet(this.ingredients);
+				} //finish
 				break;
+
 			case 1:
 				this.ingredients.add(randIngred);
 				break;
+
 			case 2:
-				if(curingreds.size > 0){
-					curingreds = deleteRandomElementFromSet(curingreds);
+				if (this.ingredients.size > 0) {
+					this.ingredients = deleteRandomElementFromSet(this.ingredients);
 				}
 				this.ingredients.add(randIngred);
 				break;
+
 			default:
 				break;
 		}
-		
-		this.ingredients = curingreds;
 
 		this.normalizeIngredients()
+
 	}
+
+
+	toString() {
+
+		let beginStr = `Yummy Recipe - Fitness: ${this.fitness} - `;
+		
+		let ingredientNames = Array.from(this.ingredients).reduce((ingredients, ingredient) => {
+			
+			ingredients.push(ingredient.name)
+
+			return ingredients;
+
+		}, []);
+
+		beginStr += ingredientNames.join(", ");
+
+		return beginStr;
+	}
+	
 }
 
 
@@ -392,7 +448,9 @@ const population = {
 
 	recipes: [],
 
-	size: 100,
+	size: 10,
+
+	history: [],
 
 	/**
 	 * Initialize population e
@@ -426,7 +484,7 @@ const population = {
 	
 			// apply modifications
 			let r = Recipe.crossover(r1, r2);	// crossover
-			//r.mutate();					// mutation
+			r.mutate();							// mutation
 	
 			R.push(r);
 	
@@ -467,7 +525,7 @@ const population = {
 	},
 
 
-	evolve : function(generations) {
+	evolve: function(generations) {
 
 		for (let index = 0; index < generations; index++) {
 			
@@ -475,6 +533,8 @@ const population = {
 
 			let R = this.generateRecipes(this.size, this.recipes);
 			this.recipes = this.selectPopulation(this.recipes, R);
+
+			//console.log(this.recipes[0]);
 			
 		}
 
@@ -510,10 +570,15 @@ const population = {
 
 
 	report: function() {
+
+		console.log("Report!:");
+
+		assert(this.recipes.length === this.size, 'There are not enough/too many recipes in a cookbook.');
 		
-		for (recipe of this.recipes) {
+		for (let recipe of this.recipes) {
 			
-			//console.log(recipe);
+			console.log(recipe.toString());
+			console.log();
 
 		}
 
@@ -523,5 +588,5 @@ const population = {
 
 population
 .initialize()
-.evolve(50)
+.evolve(100)
 .report();
