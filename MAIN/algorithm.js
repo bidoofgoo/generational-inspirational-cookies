@@ -171,26 +171,25 @@ class Recipe {
 	 * All ingredients assembled from 'food' databases
 	 * (made by 'knowledgebase.js').
 	 */
-	static ingredients = this.filterUnusedNutrients(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles.json')));
+	static ingredients = this.filterUnusedNutrients(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles2.json')));
 
 	/**
 	 * All possible roles an ingredient can serve
 	 * within the process of cooking a cookie.
 	 */
-	static bakingroles = [
-		"Base",
-		"Binding Agent",
-		"Leavening Agent",
-		"Fat",
-		"Sweetener",
-		"Flavorings",
-		"Add-ins",
-		"Seasoning",
-		"Texture Enhancers",
-		"Decorations/Toppings",
-		"Liquid",
-		"Chemical Leaveners"
-	];
+	static bakingroles = {
+		"Base" : 1,
+		"Fat" : 1,
+		"Sweetener" : 1,
+		"Binding Agent" :1,
+		"Leavener/Rising agent" : 1,
+		"Flavorings": 3,
+		"Add-ins" : 3,
+		"Seasoning": 3,
+		"Texture Enhancers": 1,
+		"Decorations/Toppings": 2,
+		"Liquid": 1
+	};
 
 
 	/**
@@ -416,24 +415,28 @@ class Recipe {
 
 	get fitness() {	
 
-		let incurrentcookie = new Set();
+		let totalfitness = 0;
+
+		let incurrentcookie = {};
 		
 		// assess baking roles of the ingredients
-		for (let role of Recipe.bakingroles) {
-			
-			for (let ingredient of this.ingredients) {
-				for (let ingredrole of ingredient.bakingrole) {
-					incurrentcookie.add(ingredrole)
-				}
-			}
 
+		for (let ingredient of this.ingredients) {
+			for (let role of ingredient.bakingrole) {
+				if(!(role in incurrentcookie)) incurrentcookie[role] = 0;
+				if(incurrentcookie[role] < Recipe.bakingroles[role])totalfitness++;
+				else totalfitness--;
+				incurrentcookie[role] += 1;
+			}
 		}
+
+
 
 
 
 		// asses similarity to the prototypeCookie.
 
-		return incurrentcookie.size
+		return totalfitness;
 		
 	}
 
@@ -487,7 +490,7 @@ class Recipe {
 
 	toString() {
 
-		let beginStr = `Yummy Recipe - Fitness: ${this.fitness} - `;
+		let beginStr = `Cookie Recipe - Fitness: ${this.fitness} - Ingredients: ${this.ingredients.size} - `;
 		
 		let ingredientNames = Array.from(this.ingredients).reduce((ingredients, ingredient) => {
 			
@@ -590,7 +593,7 @@ const population = {
 	},
 
 
-	evolve: function(generations) {
+	evolve: function (generations) {
 
 		for (let index = 0; index < generations; index++) {
 			
@@ -646,12 +649,10 @@ const population = {
 			console.log();
 
 		}
-
 	}
-
 }
 
 population
 .initialize()
-// .evolve(100)
-// .report();
+.evolve(50)
+.report();
