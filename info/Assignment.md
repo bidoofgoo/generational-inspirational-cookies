@@ -7,7 +7,7 @@ In this assignment you are required to build a recipe generator for cookies and/
 1. Gather an Inspiring set for Cookie/Cake recipes.
 	- combining elements of different recipes
 2. Create a Knowledgebase for the Inspiring Set
-3. Implement a Recipte Generator using a Genetic Algorithm 
+3. Implement a Recipe Generator using a Genetic Algorithm 
 4. Present generated recipes in a small cookboock.
 
 ## Deliver:

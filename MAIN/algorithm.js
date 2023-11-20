@@ -448,7 +448,7 @@ const population = {
 
 	recipes: [],
 
-	size: 10,
+	size: 200,
 
 	history: [],
 
