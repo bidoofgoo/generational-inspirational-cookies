@@ -69,7 +69,7 @@ class Amount {
 	 * @param  {number} amount [amount]
 	 * @param  {string} unit  Name of the unit.
 	 */
-	constructor(amount, unit='µg') {
+	constructor(amount=0, unit='µg') {
 
 		assert(typeof amount === 'number', 'Amount argument must be a number.');
 		assert(amount !== NaN, 'Amount cannot be NOT A NUMBER (but NaN is a number LOL)...');
@@ -123,10 +123,24 @@ class Amount {
 	add(amount) {
 
 		assert(amount instanceof Amount, 'amount must be of type Amount.');
-
 		assert(this.unit === amount.unit, `the added amount (in ${amount.unit}) must be of the same unit (${this.unit})`);
 
 		this.amount += amount.amount;
+
+		return this;
+
+	}
+
+
+	normalize(initialTotalAmount, normalizedTotalAmount) {
+
+		assert(initialTotalAmount instanceof Amount, 'initialAmount must be of type Amount.')
+		assert(normalizedTotalAmount instanceof Amount, 'normalizedAmount must be of type Amount.')
+		assert(initialTotalAmount.unit === normalizedTotalAmount.unit, 'Both amounts must have the same unit!')
+
+		let newAmount = this.amount * normalizedTotalAmount.amount / initialTotalAmount.amount;
+
+		this.amount = newAmount;
 
 		return this;
 
@@ -140,22 +154,24 @@ class Amount {
 class Recipe {
 
 	/**
+	 * Nutrients are normalized per 100g of the cookie for the doe
+	 * (or how much does the doe weights!)
+	 */
+	static portion = new Amount(100, 'g');
+
+	/**
 	 * This is the cookie we want our cookies to approach
 	 * by its nutrients.
+	 * 
+	 * Original has nutrients for 45 g (one cookie).
 	 */
-	static cookiePrototypeData = JSON.parse(fs.readFileSync(data_path + '/red_velvet_nutrients.json'));
+	static cookiePrototypeData = this.normalizeCookiePrototype(JSON.parse(fs.readFileSync(data_path + '/red_velvet_nutrients.json')));
 
 	/**
 	 * All ingredients assembled from 'food' databases
 	 * (made by 'knowledgebase.js').
 	 */
 	static ingredients = this.filterUnusedNutrients(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles.json')));
-	
-	/**
-	 * Nutrients are normalized per 100g of the cookie for the doe
-	 * (or how much does the doe weights!)
-	 */
-	static portion = new Amount(100, 'g');
 
 	/**
 	 * All possible roles an ingredient can serve
@@ -175,6 +191,53 @@ class Recipe {
 		"Liquid",
 		"Chemical Leaveners"
 	];
+
+
+	/**
+	 * Parse recipe for the prototype cookie.
+	 *
+	 * @param   {[type]}  cookiePrototype  [cookiePrototype description]
+	 *
+	 * @return  {[type]}                   [return description]
+	 */
+	static normalizeCookiePrototype(cookiePrototype) {
+
+		console.log(cookiePrototype);
+
+		// calculate initial total amount
+		let initialTotalAmount = new Amount();
+
+		// change 'amount' and 'unit' keys to Amount instance.
+		for (let nutrient in cookiePrototype) {
+
+			let amount = new Amount(cookiePrototype[nutrient].amount, cookiePrototype[nutrient].unit);
+			
+			initialTotalAmount.add(amount);
+			
+			cookiePrototype[nutrient].amount = amount;
+			delete cookiePrototype[nutrient].unit; // not needed anymore.
+
+		}
+
+		// calculate post-normalization total amount for assertion
+		let finalTotalAmount = new Amount();
+
+		// normalize amounts to one portion!
+		for (let nutrient in cookiePrototype) {
+
+			cookiePrototype[nutrient].amount.normalize(initialTotalAmount, this.portion);
+
+			finalTotalAmount.add(cookiePrototype[nutrient].amount);
+
+		}
+
+		assert(
+			this.portion.amount === finalTotalAmount.amount,
+			`The current portion ${finalTotalAmount} does not sum to to ${this.portion} normalized portion amount.`)
+
+		return cookiePrototype
+
+	}
 
 	/**
 	 * Remove ~IN PLACE~ all the nutrients that are not mentioned in cookiePrototypeData.
@@ -366,6 +429,8 @@ class Recipe {
 
 		}
 
+
+
 		// asses similarity to the prototypeCookie.
 
 		return incurrentcookie.size
@@ -374,7 +439,7 @@ class Recipe {
 
 	calcNovelty(population) {
 		
-		return 
+		//return 
 
 	}
 	
@@ -448,7 +513,7 @@ const population = {
 
 	recipes: [],
 
-	size: 200,
+	size: 20,
 
 	history: [],
 
@@ -588,5 +653,5 @@ const population = {
 
 population
 .initialize()
-.evolve(100)
-.report();
+// .evolve(100)
+// .report();
