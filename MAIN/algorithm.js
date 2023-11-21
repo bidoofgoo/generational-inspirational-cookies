@@ -148,7 +148,7 @@ class Amount {
 	}
 
 	toString() {
-		if(this.unit == "µg") return `${this.amount/100} g`;
+		if(this.unit == "µg") return `${Math.round(this.amount/100)}g`;
 	}
 
 	copy() {
@@ -187,17 +187,19 @@ class Recipe {
 	 * within the process of cooking a cookie.
 	 */
 	static bakingroles = {
-		"Base" : 1,
-		"Fat" : 1,
-		"Sweetener" : 1,
-		"Binding Agent" :1,
-		"Leavener/Rising agent" : 1,
-		"Flavorings": 3,
-		"Add-ins" : 3,
-		"Seasoning": 3,
-		"Texture Enhancers": 1,
-		"Decorations/Toppings": 2,
-		"Liquid": 1
+
+		"Base" : new Amount(25, "g"),
+		"Fat" : new Amount(15, "g"),
+		"Sweetener" : new Amount(15, "g"),
+		"Binding Agent" :new Amount(10, "g"),
+		"Leavener/Rising agent" : new Amount(5, "g"),
+		"Flavorings": new Amount(5, "g"),
+		"Add-ins" : new Amount(10, "g"),
+		"Seasoning": new Amount(2, "g"),
+		"Texture Enhancers": new Amount(5, "g"),
+		"Decorations/Toppings": new Amount(3, "g"),
+		"Liquid": new Amount(5, "g")
+
 	};
 
 
@@ -209,8 +211,6 @@ class Recipe {
 	 * @return  {[type]}                   [return description]
 	 */
 	static normalizeCookiePrototype(cookiePrototype) {
-
-		console.log(cookiePrototype);
 
 		// calculate initial total amount
 		let initialTotalAmount = new Amount();
@@ -276,6 +276,7 @@ class Recipe {
 
 		// filter out some categories...
 		ingredients = ingredients.filter(ingredient => !ingredient.category.includes('sandwich'));
+		ingredients = ingredients.filter(ingredient => ingredient.category !== 'Liquid');
 
 		return ingredients;
 
@@ -359,6 +360,8 @@ class Recipe {
 
 		//this.calcNutrients();
 
+		this.amountPerCategory // R E M O V E
+
 	}
 
 
@@ -393,8 +396,6 @@ class Recipe {
 
 		}
 
-		// console.log(this.ingredients)
-
 		let currentAmount = Math.round(this.totalAmount().amount);
 		let normalizedAmount = Math.round(Recipe.portion.amount);
 
@@ -415,15 +416,16 @@ class Recipe {
 		for (let ingredient of this.ingredients) {
 
 			for (let nutrient of ingredient.nutrients) {
+
 				let amount = new Amount(nutrient.amount, nutrient.unit);
 				let portion = Recipe.portion.amount;
 				let ingredAmount = ingredient.amount.amount;
+
+				// normalization
 				amount.amount = (amount.amount * ingredAmount) / portion;
 				
-
 				if (nutrient.name in this.totalNutrients) {
 
-					
 					this.totalNutrients[nutrient.name].add(amount);
 
 				} else {
@@ -432,35 +434,93 @@ class Recipe {
 
 				}
 			}
+
 		}
 
 		return this.totalNutrients;
+
 	}
+
+	get amountPerCategory() {
+
+		let amounts = {}
+
+		for (let role in Recipe.bakingroles) {
+			
+			amounts[role] = new Amount();
+
+		}
+
+		for (let ingredient of this.ingredients) {
+
+			for (let role of ingredient.bakingrole) {
+
+				amounts[role].add(ingredient.amount);
+
+			}
+
+		}
+
+		return amounts;
+
+	}
+
 
 	get fitness() {	
 
 		let totalfitness = 0;
 
-		let incurrentcookie = {};
+		// let incurrentcookie = {};
 		
 		// assess baking roles of the ingredients
+		// for (let ingredient of this.ingredients) {
+		// 	for (let role of ingredient.bakingrole) {
+		// 		if(!(role in incurrentcookie)) incurrentcookie[role] = 0;
+		// 		if(incurrentcookie[role] < Recipe.bakingroles[role])totalfitness+= 10;
+		// 		else totalfitness = Math.max(totalfitness - 10, 0);
+		// 		incurrentcookie[role] += 1;
+		// 	}
+		// }
 
-		for (let ingredient of this.ingredients) {
-			for (let role of ingredient.bakingrole) {
-				if(!(role in incurrentcookie)) incurrentcookie[role] = 0;
-				if(incurrentcookie[role] < Recipe.bakingroles[role])totalfitness+= 10;
-				else totalfitness = Math.max(totalfitness - 10, 0);
-				incurrentcookie[role] += 1;
-			}
+		// FITNESS I – by amount per category
+		let amountPerCategory = this.amountPerCategory
+
+		// refer to Recipe.bakingroles for the 'expected' amount
+		let differencePerCategory = {}
+
+		for (let category in Recipe.bakingroles) {
+
+			let expectedAmount = Recipe.bakingroles[category].amount;
+			let currentAmount = amountPerCategory[category].amount;
+
+			differencePerCategory[category] = Math.max(1 - Math.abs(expectedAmount - currentAmount) / (expectedAmount * 2), 0);
+
+			totalfitness += differencePerCategory[category];
+
 		}
 
-		let nutrients = this.nutrients;
+		// FITNESS II – by similarity to prototype cookie.
 
+		let differencePerNutrient = {}
 
+		for (let nutrient in Recipe.cookiePrototypeData) {
 
+			if (nutrient in this.nutrients) {
 
+				let expectedAmount = Recipe.cookiePrototypeData[nutrient].amount.amount;
+				let currentAmount = this.nutrients[nutrient].amount;
 
-		// asses similarity to the prototypeCookie.
+				differencePerNutrient[nutrient] = Math.max(1 - Math.abs(expectedAmount - currentAmount) / (expectedAmount * 2), 0);
+
+				totalfitness += differencePerNutrient[nutrient];
+
+			} else {
+
+				totalfitness /= 0.666;
+
+			}
+				
+		}
 
 		return totalfitness;
 		
@@ -468,7 +528,20 @@ class Recipe {
 
 	calcNovelty(population) {
 		
-		//return 
+		// First see how many of what ingredient of this recipe exists in the population. Then based on that number;
+		let ingredientsInPop = {}
+
+		for (let ingredient of this.ingredients) {
+
+			if(!ingredient.name in ingredientsInPop)ingredientsInPop[ingredient.name]=0;
+
+			for (let recipe of population) {
+
+				if(recipe.name == ingredient.name) ingredientsInPop[ingredient.name]++;
+
+			}
+		}
+		
 
 	}
 	
@@ -529,7 +602,7 @@ class Recipe {
 		
 		let ingredientNames = Array.from(this.ingredients).reduce((ingredients, ingredient) => {
 			
-			ingredients.push(ingredient.name)
+			ingredients.push(ingredient.amount.toString() + " " + ingredient.name)
 
 			return ingredients;
 
@@ -551,7 +624,7 @@ const population = {
 
 	recipes: [],
 
-	size: 20,
+	size: 150,
 
 	history: [],
 
@@ -574,7 +647,6 @@ const population = {
 		
 	},
 
-
 	generateRecipes: function(size, population) {
 
 		let R = []; // generated recipes
@@ -587,6 +659,8 @@ const population = {
 	
 			// apply modifications
 			let r = Recipe.crossover(r1, r2);	// crossover
+			r.mutate();							// mutation
+			r.mutate();							// mutation
 			r.mutate();							// mutation
 	
 			R.push(r);
@@ -604,7 +678,7 @@ const population = {
 		for (const recipe of recipes) {
 			
 			//recipe.fitness;
-			recipe.calcNovelty();
+			//recipe.calcNovelty();
 
 		}
 	
@@ -614,11 +688,11 @@ const population = {
 
 		// calculate the fitness
 		let sum = this.recipes.reduce((a, r) => a + r.fitness, 0);
-		let fitness = Math.floor(Math.random * sum);
+		let fitness = Math.floor(Math.random() * sum);
 	
 		// cheap randomisation using hash table unpredictability.
 		for (const recipe of recipes) {
-			if (fitness < recipe.fitness) return r;
+			if (fitness < recipe.fitness) return recipe;
 			fitness -= recipe.fitness;
 		}
 	
@@ -627,12 +701,10 @@ const population = {
 	
 	},
 
-
 	evolve: function (generations) {
 
 		for (let index = 0; index < generations; index++) {
 			
-
 			let R = this.generateRecipes(this.size, this.recipes);
 			this.recipes = this.selectPopulation(this.recipes, R);
 
@@ -661,23 +733,24 @@ const population = {
 	
 	},
 
-
 	report: function() {
 
-		console.log("Report!:");
+		console.log("\nReport!:\n");
 
-		assert(this.recipes.length === this.size, 'There are not enough/too many recipes in a cookbook.');
-		
-		for (let recipe of this.recipes) {
-			
-			console.log(recipe);
+		assert(this.recipes.length === this.size, `Got ${this.recipes.length} recipes, expected ${this.size}...`);
+
+		for (let i=0; i<3; i++) {
+
+			let recipe = this.recipes[i]
+			console.log(recipe.toString());
 			console.log();
-
+			
 		}
 	}
 }
 
 population
 .initialize()
-.evolve(25)
+.evolve(500)
 .report();
+// console.log('\nEvolution TURNED OFF.\n')
