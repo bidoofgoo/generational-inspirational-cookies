@@ -1,0 +1,34 @@
+Generated cookie no 2 - After 1000 generations with a population size of 250 and a mutation rate of 500.
+
+Cookie Recipe
+Fitness: 227.9921311243965 (roles: 8.125714740313198, prototype: 6.010733026641642, novelty: 4.668)
+
+8 ingredients total : 
+ - 1g fresh cauliflower
+ - 5g soy yogurt
+ - 3g chocolate coated popcorn
+ - 1g steak sauce
+ - 68g cooked broccoflower
+ - 1g lightly salted potato chips
+ - 9g peanut butter
+ - 11g stick butter
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 5g
+ - Fiber, total dietary : 3g
+ - Sodium, Na : 24g
+ - Cholesterol : 3g
+
+Bakingroles:
+ - Base/Flour : cooked broccoflower
+ - Fat/Oil/Butter : peanut butter, stick butter
+ - Sweetener : peanut butter
+ - Binder/Egg/Fruit/Yoghurt : soy yogurt
+ - Leavener/Rising/Soda : 
+ - Flavorings : fresh cauliflower, chocolate coated popcorn
+ - Add-ins : fresh cauliflower, chocolate coated popcorn, steak sauce, lightly salted potato chips
+ - Seasoning : steak sauce
+ - Texture Enhancers : chocolate coated popcorn, steak sauce, lightly salted potato chips
+ - Decorations/Toppings : fresh cauliflower, chocolate coated popcorn, lightly salted potato chips
+ - Liquid : soy yogurt

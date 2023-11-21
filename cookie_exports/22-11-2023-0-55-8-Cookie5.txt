@@ -1,0 +1,35 @@
+Generated cookie no 5 - After 1000 generations with a population size of 250 and a mutation rate of 500.
+
+Cookie Recipe
+Fitness: 224.57550787416915 (roles: 7.99069092732663, prototype: 5.921397002931916, novelty: 4.746285714285714)
+
+7 ingredients total : 
+ - 71g whole buttermilk
+ - 5g home recipe milk shake
+ - 3g cheddar cheese
+ - 7g stick butter
+ - 7g frozen fruit mixture
+ - 6g frozen concentrate lemonade
+ - 4.268633635745909µg cornbread stuffing
+
+Nutrients:
+ - Protein : 3g
+ - Sugars, total including NLEA : 7g
+ - Sodium, Na : 14g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 1mg
+ - Sugars, Total : 0.929646678002672µg
+ - Total fat (NLEA) : 8mg
+
+Bakingroles:
+ - Base/Flour : 
+ - Fat/Oil/Butter : stick butter
+ - Sweetener : cheddar cheese, frozen concentrate lemonade
+ - Binder/Egg/Fruit/Yoghurt : frozen fruit mixture
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : frozen concentrate lemonade
+ - Add-ins : cheddar cheese, frozen fruit mixture, cornbread stuffing
+ - Seasoning : 
+ - Texture Enhancers : cheddar cheese, cornbread stuffing
+ - Decorations/Toppings : cheddar cheese, cornbread stuffing
+ - Liquid : whole buttermilk, home recipe milk shake, frozen concentrate lemonade

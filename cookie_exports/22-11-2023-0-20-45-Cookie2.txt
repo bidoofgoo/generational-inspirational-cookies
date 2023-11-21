@@ -1,0 +1,36 @@
+Generated cookie no 1 - After 1000 generations with a population size of 500.
+
+Cookie Recipe
+Fitness: 243.04660330940516 (roles: 8.43373510834057, prototype: 6.029510914311454, novelty: 4.779555555555556)
+
+9 ingredients total : 
+ - 2g soy sauce
+ - 7g raw raspberries
+ - 5g frozen concentrate lemonade
+ - 8g liquid butter replacement
+ - 6g cream soda soft drink
+ - 3g cottage cheese
+ - 11g tub butter-oil blend
+ - 3g made from no sugar added dry mix with reduced fat milk Nesquik chocolate milk
+ - 55g evaporated milk
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 10g
+ - Fiber, total dietary : 4.099808295005574µg
+ - Sodium, Na : 29g
+ - Sugars, Total : 2mg
+ - Cholesterol : 3g
+
+Bakingroles:
+ - Base/Flour : liquid butter replacement
+ - Fat/Oil/Butter : liquid butter replacement, tub butter-oil blend
+ - Sweetener : raw raspberries, frozen concentrate lemonade, cottage cheese
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : cream soda soft drink
+ - Flavorings : frozen concentrate lemonade
+ - Add-ins : soy sauce, liquid butter replacement, cottage cheese
+ - Seasoning : soy sauce
+ - Texture Enhancers : soy sauce, cottage cheese, made from no sugar added dry mix with reduced fat milk Nesquik chocolate milk
+ - Decorations/Toppings : cottage cheese
+ - Liquid : soy sauce, frozen concentrate lemonade, cream soda soft drink, made from no sugar added dry mix with reduced fat milk Nesquik chocolate milk, evaporated milk

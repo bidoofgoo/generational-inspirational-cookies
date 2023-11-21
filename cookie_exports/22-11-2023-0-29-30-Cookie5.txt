@@ -1,0 +1,34 @@
+Generated cookie no 5 - After 2000 generations with a population size of 250 and a mutation rate of 50.
+
+Cookie Recipe
+Fitness: 231.53508891583354 (roles: 8.847427724712304, prototype: 5.867659921236427, novelty: 4.460000000000001)
+
+8 ingredients total : 
+ - 13g brown sugar
+ - 26g light butter
+ - 3g  with wine cheese
+ - 4g fried pickles
+ - 3g chocolate flavored soft drink
+ - 2g vinegar
+ - 13g snack mix
+ - 35g rice flour
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 14g
+ - Sodium, Na : 29g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 5mg
+
+Bakingroles:
+ - Base/Flour : rice flour
+ - Fat/Oil/Butter : light butter
+ - Sweetener : brown sugar,  with wine cheese
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : chocolate flavored soft drink
+ - Flavorings : fried pickles, vinegar
+ - Add-ins :  with wine cheese, snack mix
+ - Seasoning : vinegar
+ - Texture Enhancers :  with wine cheese
+ - Decorations/Toppings :  with wine cheese
+ - Liquid : chocolate flavored soft drink, vinegar

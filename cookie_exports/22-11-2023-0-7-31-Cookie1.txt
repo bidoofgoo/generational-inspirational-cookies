@@ -1,0 +1,34 @@
+Cookie Recipe
+Fitness: 248.8367991799934 (roles: 8.926865391903315, prototype: 6.03356012202676, novelty: 4.619999999999999)
+
+10 ingredients total : 
+ - 2g yellow or green summer squash
+ - 3g Mozzarella cheese
+ - 4g cream soda soft drink
+ - 27g reduced fat bologna
+ - 5g Chinese cabbage
+ - 6g stick margarine
+ - 40g snow cone
+ - 3g dried cranberries
+ - 10g regular caramel dip
+ - 2g caviar
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 20g
+ - Fiber, total dietary : 2mg
+ - Sodium, Na : 37g
+ - Cholesterol : 3g
+
+Bakingroles:
+ - Base/Flour : reduced fat bologna
+ - Fat/Oil/Butter : stick margarine, regular caramel dip
+ - Sweetener : Mozzarella cheese, dried cranberries, regular caramel dip
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : cream soda soft drink
+ - Flavorings : dried cranberries, caviar
+ - Add-ins : yellow or green summer squash, Mozzarella cheese, Chinese cabbage
+ - Seasoning : caviar
+ - Texture Enhancers : Mozzarella cheese
+ - Decorations/Toppings : yellow or green summer squash, Mozzarella cheese, reduced fat bologna, Chinese cabbage, snow cone, regular caramel dip, caviar
+ - Liquid : cream soda soft drink, caviar

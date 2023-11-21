@@ -1,0 +1,35 @@
+Generated cookie no 3 - After 10000 generations with a population size of 100 and a mutation rate of 100.
+
+Cookie Recipe
+Fitness: 240.66424196301105 (roles: 9.172646269337761, prototype: 5.787610126259663, novelty: 4.533333333333333)
+
+9 ingredients total : 
+ - 9mg stick margarine-oil blend
+ - 10g stick butter
+ - 9g fruit leather candy
+ - 38g nuts and syrup topping
+ - 3g candy shell chocolate candy
+ - 2g lemon-butter sauce
+ - 5g canned corn
+ - 27g cheese bread
+ - 5g home recipe milk shake
+
+Nutrients:
+ - Protein : 5g
+ - Sodium, Na : 33g
+ - Sugars, total including NLEA : 22g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 2g
+
+Bakingroles:
+ - Base/Flour : cheese bread
+ - Fat/Oil/Butter : stick margarine-oil blend, stick butter
+ - Sweetener : fruit leather candy, candy shell chocolate candy, lemon-butter sauce
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : canned corn
+ - Add-ins : stick margarine-oil blend, candy shell chocolate candy, canned corn
+ - Seasoning : lemon-butter sauce
+ - Texture Enhancers : candy shell chocolate candy, lemon-butter sauce
+ - Decorations/Toppings : fruit leather candy, nuts and syrup topping, candy shell chocolate candy, canned corn, cheese bread
+ - Liquid : home recipe milk shake

@@ -1,0 +1,33 @@
+Generated cookie no 3 - After 1000 generations with a population size of 250 and a mutation rate of 500.
+
+Cookie Recipe
+Fitness: 226.53754358371683 (roles: 8.425602255034608, prototype: 6.0618284776282385, novelty: 4.435428571428572)
+
+7 ingredients total : 
+ - 26g light butter
+ - 49g cooked broccoflower
+ - 9g peanut butter
+ - 3g candy shell chocolate candy
+ - 8g frozen fruit mixture
+ - 3g frozen concentrate lemonade
+ - 1g steak sauce
+
+Nutrients:
+ - Protein : 5g
+ - Sodium, Na : 25g
+ - Cholesterol : 3g
+ - Sugars, total including NLEA : 7g
+ - Fiber, total dietary : 2g
+
+Bakingroles:
+ - Base/Flour : cooked broccoflower
+ - Fat/Oil/Butter : light butter, peanut butter
+ - Sweetener : peanut butter, candy shell chocolate candy, frozen concentrate lemonade
+ - Binder/Egg/Fruit/Yoghurt : frozen fruit mixture
+ - Leavener/Rising/Soda : 
+ - Flavorings : frozen concentrate lemonade
+ - Add-ins : candy shell chocolate candy, frozen fruit mixture, steak sauce
+ - Seasoning : steak sauce
+ - Texture Enhancers : candy shell chocolate candy, steak sauce
+ - Decorations/Toppings : candy shell chocolate candy
+ - Liquid : frozen concentrate lemonade

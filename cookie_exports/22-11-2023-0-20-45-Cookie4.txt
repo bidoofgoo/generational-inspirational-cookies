@@ -1,0 +1,35 @@
+Generated cookie no 3 - After 1000 generations with a population size of 500.
+
+Cookie Recipe
+Fitness: 239.59675149843886 (roles: 8.81531852549591, prototype: 5.833086570703462, novelty: 4.6595555555555555)
+
+9 ingredients total : 
+ - 19g raw broccoflower
+ - 3g frozen concentrate lemonade
+ - 48g evaporated milk
+ - 2g light cream cheese
+ - 8g honey butter
+ - 1g raw cherries
+ - 1g caviar
+ - 8g liquid butter replacement
+ - 10g Greek yogurt
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 11g
+ - Fiber, total dietary : 7mg
+ - Sodium, Na : 15g
+ - Cholesterol : 3g
+
+Bakingroles:
+ - Base/Flour : raw broccoflower, liquid butter replacement
+ - Fat/Oil/Butter : liquid butter replacement
+ - Sweetener : frozen concentrate lemonade, light cream cheese, honey butter, raw cherries
+ - Binder/Egg/Fruit/Yoghurt : Greek yogurt
+ - Leavener/Rising/Soda : 
+ - Flavorings : frozen concentrate lemonade, raw cherries, caviar
+ - Add-ins : light cream cheese, liquid butter replacement
+ - Seasoning : caviar
+ - Texture Enhancers : light cream cheese, raw cherries
+ - Decorations/Toppings : raw cherries, caviar
+ - Liquid : frozen concentrate lemonade, evaporated milk, caviar, Greek yogurt

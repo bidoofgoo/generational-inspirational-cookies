@@ -1,0 +1,35 @@
+Generated cookie no 2 - After 2000 generations with a population size of 250 and a mutation rate of 50.
+
+Cookie Recipe
+Fitness: 233.00762889243376 (roles: 8.818132557939986, prototype: 6.038321104406024, novelty: 4.376)
+
+10 ingredients total : 
+ - 3g  with wine cheese
+ - 9g aspartame sugar substitute
+ - 15g light butter
+ - 4g whole milk yogurt
+ - 4g pepper type soft drink
+ - 26g rice flour
+ - 2g vinegar
+ - 4g regular cream cheese
+ - 20g whole buttermilk
+ - 15g evaporated milk
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 10g
+ - Sodium, Na : 16g
+ - Cholesterol : 3g
+
+Bakingroles:
+ - Base/Flour : rice flour
+ - Fat/Oil/Butter : light butter
+ - Sweetener :  with wine cheese, aspartame sugar substitute, regular cream cheese
+ - Binder/Egg/Fruit/Yoghurt : whole milk yogurt
+ - Leavener/Rising/Soda : pepper type soft drink
+ - Flavorings : vinegar
+ - Add-ins :  with wine cheese, regular cream cheese
+ - Seasoning : vinegar
+ - Texture Enhancers :  with wine cheese, regular cream cheese
+ - Decorations/Toppings :  with wine cheese
+ - Liquid : whole milk yogurt, pepper type soft drink, vinegar, whole buttermilk, evaporated milk

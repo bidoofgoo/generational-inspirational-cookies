@@ -1,0 +1,34 @@
+Generated cookie no 4 - After 2000 generations with a population size of 250 and a mutation rate of 50.
+
+Cookie Recipe
+Fitness: 232.09740064527404 (roles: 8.850014080105232, prototype: 5.957667711012619, novelty: 4.401999999999999)
+
+8 ingredients total : 
+ - 3g reduced fat pepperoni
+ - 6g regular cream cheese
+ - 10g snack mix
+ - 18g light butter
+ - 41g rice flour
+ - 3g vinegar
+ - 16g brown sugar
+ - 4g chocolate flavored soft drink
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 16g
+ - Sodium, Na : 23g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 3mg
+
+Bakingroles:
+ - Base/Flour : rice flour
+ - Fat/Oil/Butter : light butter
+ - Sweetener : regular cream cheese, brown sugar
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : chocolate flavored soft drink
+ - Flavorings : reduced fat pepperoni, vinegar
+ - Add-ins : regular cream cheese, snack mix
+ - Seasoning : vinegar
+ - Texture Enhancers : regular cream cheese
+ - Decorations/Toppings : reduced fat pepperoni
+ - Liquid : vinegar, chocolate flavored soft drink

@@ -1,0 +1,36 @@
+Generated cookie no 1 - After 2000 generations with a population size of 250 and a mutation rate of 50.
+
+Cookie Recipe
+Fitness: 233.15702552155383 (roles: 8.635619793343219, prototype: 6.008780722284386, novelty: 4.493333333333334)
+
+9 ingredients total : 
+ - 8g Greek yogurt
+ - 47g whole buttermilk
+ - 4g regular cream cheese
+ - 15g light butter
+ - 4g pepper type soft drink
+ - 3g reduced fat pepperoni
+ - 12g aspartame sugar substitute
+ - 1g vinegar
+ - 7g snack mix
+
+Nutrients:
+ - Sodium, Na : 23g
+ - Cholesterol : 3g
+ - Protein : 4g
+ - Sugars, Total : 3mg
+ - Sugars, total including NLEA : 12g
+ - Fiber, total dietary : 2mg
+
+Bakingroles:
+ - Base/Flour : 
+ - Fat/Oil/Butter : light butter
+ - Sweetener : regular cream cheese, aspartame sugar substitute
+ - Binder/Egg/Fruit/Yoghurt : Greek yogurt
+ - Leavener/Rising/Soda : pepper type soft drink
+ - Flavorings : reduced fat pepperoni, vinegar
+ - Add-ins : regular cream cheese, snack mix
+ - Seasoning : vinegar
+ - Texture Enhancers : regular cream cheese
+ - Decorations/Toppings : reduced fat pepperoni
+ - Liquid : Greek yogurt, whole buttermilk, pepper type soft drink, vinegar

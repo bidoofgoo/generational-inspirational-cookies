@@ -1,0 +1,35 @@
+Generated cookie no 2 - After 1000 generations with a population size of 500.
+
+Cookie Recipe
+Fitness: 240.96118378159758 (roles: 8.815001105271119, prototype: 5.998103038515339, novelty: 4.557333333333333)
+
+9 ingredients total : 
+ - 1g alfredo sauce
+ - 4g bottled milk shake
+ - 61g evaporated milk
+ - 7g red sangria
+ - 2g raw honeydew melon
+ - 8g Greek yogurt
+ - 6g liquid butter replacement
+ - 3g movie theater popcorn
+ - 8g light butter
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 8g
+ - Sodium, Na : 17g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 2mg
+
+Bakingroles:
+ - Base/Flour : liquid butter replacement
+ - Fat/Oil/Butter : liquid butter replacement, light butter
+ - Sweetener : red sangria, raw honeydew melon
+ - Binder/Egg/Fruit/Yoghurt : Greek yogurt
+ - Leavener/Rising/Soda : bottled milk shake
+ - Flavorings : raw honeydew melon, movie theater popcorn
+ - Add-ins : alfredo sauce, liquid butter replacement, movie theater popcorn
+ - Seasoning : alfredo sauce
+ - Texture Enhancers : alfredo sauce, movie theater popcorn
+ - Decorations/Toppings : movie theater popcorn
+ - Liquid : alfredo sauce, bottled milk shake, evaporated milk, Greek yogurt

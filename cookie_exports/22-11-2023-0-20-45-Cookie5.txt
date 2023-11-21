@@ -1,0 +1,36 @@
+Generated cookie no 4 - After 1000 generations with a population size of 500.
+
+Cookie Recipe
+Fitness: 239.43246191679918 (roles: 8.47349004946661, prototype: 5.9325324961023815, novelty: 4.763)
+
+8 ingredients total : 
+ - 6g raw raspberries
+ - 6g liquid butter replacement
+ - 66g evaporated milk
+ - 9g stick butter
+ - 4g frozen concentrate lemonade
+ - 4g cream soda soft drink
+ - 3g whipped cream
+ - 1g soy sauce
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, Total : 2mg
+ - Sodium, Na : 23g
+ - Cholesterol : 3g
+ - Sugars, total including NLEA : 10g
+ - Total fat (NLEA) : 6g
+ - Fiber, total dietary : 2.258727158909714µg
+
+Bakingroles:
+ - Base/Flour : liquid butter replacement
+ - Fat/Oil/Butter : liquid butter replacement, stick butter
+ - Sweetener : raw raspberries, frozen concentrate lemonade
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : cream soda soft drink
+ - Flavorings : frozen concentrate lemonade
+ - Add-ins : liquid butter replacement, whipped cream, soy sauce
+ - Seasoning : soy sauce
+ - Texture Enhancers : whipped cream, soy sauce
+ - Decorations/Toppings : whipped cream
+ - Liquid : evaporated milk, frozen concentrate lemonade, cream soda soft drink, whipped cream, soy sauce

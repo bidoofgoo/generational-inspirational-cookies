@@ -1,0 +1,36 @@
+Generated cookie no 1 - After 1000 generations with a population size of 250 and a mutation rate of 500.
+
+Cookie Recipe
+Fitness: 229.2504937651899 (roles: 8.549852918471597, prototype: 5.902317343894046, novelty: 4.542857142857143)
+
+7 ingredients total : 
+ - 23g light butter
+ - 58g cooked broccoflower
+ - 4g home recipe milk shake
+ - 8g frozen fruit mixture
+ - 3g amaranth flour
+ - 3g raw ripe plantain
+ - 2g cheddar cheese
+
+Nutrients:
+ - Protein : 4g
+ - Sodium, Na : 20g
+ - Cholesterol : 3g
+ - Sugars, total including NLEA : 3g
+ - Fiber, total dietary : 2g
+ - Total dietary fiber (AOAC 2011.25) : 2mg
+ - Sugars, Total : 0.7156583702048402µg
+ - Total fat (NLEA) : 6mg
+
+Bakingroles:
+ - Base/Flour : cooked broccoflower, amaranth flour
+ - Fat/Oil/Butter : light butter
+ - Sweetener : raw ripe plantain, cheddar cheese
+ - Binder/Egg/Fruit/Yoghurt : frozen fruit mixture
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : raw ripe plantain
+ - Add-ins : frozen fruit mixture, cheddar cheese
+ - Seasoning : 
+ - Texture Enhancers : raw ripe plantain, cheddar cheese
+ - Decorations/Toppings : cheddar cheese
+ - Liquid : home recipe milk shake

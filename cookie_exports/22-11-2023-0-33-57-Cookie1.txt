@@ -1,0 +1,35 @@
+Generated cookie no 1 - After 10000 generations with a population size of 100 and a mutation rate of 100.
+
+Cookie Recipe
+Fitness: 248.41072832639358 (roles: 9.503651676259164, prototype: 5.964656540267102, novelty: 4.3822222222222225)
+
+9 ingredients total : 
+ - 3g Camembert cheese
+ - 5g home recipe milk shake
+ - 2g lemon-butter sauce
+ - 29g snow cone
+ - 4g canned corn
+ - 22g cheese bread
+ - 17g light butter
+ - 10g chocolate covered fruit
+ - 7g fruit leather candy
+
+Nutrients:
+ - Protein : 4g
+ - Sugars, total including NLEA : 16g
+ - Sodium, Na : 32g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 8mg
+
+Bakingroles:
+ - Base/Flour : cheese bread
+ - Fat/Oil/Butter : light butter
+ - Sweetener : Camembert cheese, lemon-butter sauce, fruit leather candy
+ - Binder/Egg/Fruit/Yoghurt : chocolate covered fruit
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : canned corn
+ - Add-ins : Camembert cheese, canned corn
+ - Seasoning : lemon-butter sauce
+ - Texture Enhancers : Camembert cheese, lemon-butter sauce
+ - Decorations/Toppings : Camembert cheese, snow cone, canned corn, cheese bread, chocolate covered fruit, fruit leather candy
+ - Liquid : home recipe milk shake

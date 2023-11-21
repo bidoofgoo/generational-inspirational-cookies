@@ -1,0 +1,36 @@
+Generated cookie no 5 - After 10000 generations with a population size of 100 and a mutation rate of 100.
+
+Cookie Recipe
+Fitness: 238.50406525908045 (roles: 9.314450574130442, prototype: 5.798417450288316, novelty: 4.4159999999999995)
+
+10 ingredients total : 
+ - 16g light butter
+ - 29g dragon fruit
+ - 6mg chicken liver
+ - 10mg tartar sauce
+ - 10g chocolate covered fruit
+ - 30g sunflower meal bread
+ - 1g lemon-butter sauce
+ - 5g canned corn
+ - 3g Camembert cheese
+ - 5g home recipe milk shake
+
+Nutrients:
+ - Protein : 5g
+ - Sodium, Na : 28g
+ - Cholesterol : 3g
+ - Sugars, total including NLEA : 6g
+ - Fiber, total dietary : 2g
+
+Bakingroles:
+ - Base/Flour : sunflower meal bread
+ - Fat/Oil/Butter : light butter
+ - Sweetener : lemon-butter sauce, Camembert cheese
+ - Binder/Egg/Fruit/Yoghurt : chocolate covered fruit
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : canned corn
+ - Add-ins : canned corn, Camembert cheese
+ - Seasoning : tartar sauce, lemon-butter sauce
+ - Texture Enhancers : tartar sauce, lemon-butter sauce, Camembert cheese
+ - Decorations/Toppings : dragon fruit, chocolate covered fruit, sunflower meal bread, canned corn, Camembert cheese
+ - Liquid : chicken liver, home recipe milk shake

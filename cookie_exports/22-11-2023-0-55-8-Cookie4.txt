@@ -1,0 +1,35 @@
+Generated cookie no 4 - After 1000 generations with a population size of 250 and a mutation rate of 500.
+
+Cookie Recipe
+Fitness: 225.76363691541346 (roles: 9.077228481898874, prototype: 5.68063161591814, novelty: 4.378285714285714)
+
+7 ingredients total : 
+ - 7g home recipe milk shake
+ - 51g cooked broccoflower
+ - 2g steak sauce
+ - 3g cheddar cheese
+ - 9g frozen fruit mixture
+ - 25g light butter
+ - 4g canned peach
+
+Nutrients:
+ - Protein : 3g
+ - Sugars, total including NLEA : 4g
+ - Fiber, total dietary : 2g
+ - Sodium, Na : 25g
+ - Cholesterol : 3g
+ - Sugars, Total : 0.8992226140570673µg
+ - Total fat (NLEA) : 8mg
+
+Bakingroles:
+ - Base/Flour : cooked broccoflower
+ - Fat/Oil/Butter : light butter
+ - Sweetener : cheddar cheese, canned peach
+ - Binder/Egg/Fruit/Yoghurt : frozen fruit mixture
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : canned peach
+ - Add-ins : steak sauce, cheddar cheese, frozen fruit mixture
+ - Seasoning : steak sauce
+ - Texture Enhancers : steak sauce, cheddar cheese
+ - Decorations/Toppings : cheddar cheese
+ - Liquid : home recipe milk shake

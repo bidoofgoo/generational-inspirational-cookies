@@ -1,0 +1,35 @@
+Generated cookie no 4 - After 10000 generations with a population size of 100 and a mutation rate of 100.
+
+Cookie Recipe
+Fitness: 238.7832941003318 (roles: 8.837263603071515, prototype: 5.937022448539024, novelty: 4.55111111111111)
+
+9 ingredients total : 
+ - 3g lemon-butter sauce
+ - 19g light butter
+ - 3g creme brulee
+ - 5g canned corn
+ - 4g home recipe milk shake
+ - 31g nuts and syrup topping
+ - 26g whole wheat bread
+ - 2g candy shell chocolate candy
+ - 7g fruit leather candy
+
+Nutrients:
+ - Protein : 5g
+ - Sugars, total including NLEA : 19g
+ - Sodium, Na : 31g
+ - Cholesterol : 3g
+ - Fiber, total dietary : 3g
+
+Bakingroles:
+ - Base/Flour : whole wheat bread
+ - Fat/Oil/Butter : light butter
+ - Sweetener : lemon-butter sauce, creme brulee, candy shell chocolate candy, fruit leather candy
+ - Binder/Egg/Fruit/Yoghurt : 
+ - Leavener/Rising/Soda : home recipe milk shake
+ - Flavorings : canned corn
+ - Add-ins : creme brulee, canned corn, candy shell chocolate candy
+ - Seasoning : lemon-butter sauce
+ - Texture Enhancers : lemon-butter sauce, candy shell chocolate candy
+ - Decorations/Toppings : creme brulee, canned corn, nuts and syrup topping, whole wheat bread, candy shell chocolate candy, fruit leather candy
+ - Liquid : home recipe milk shake

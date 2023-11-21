@@ -1,0 +1,35 @@
+Generated cookie no 0 - After 1000 generations with a population size of 500.
+
+Cookie Recipe
+Fitness: 245.08973927305811 (roles: 8.489254944321498, prototype: 6.053802259558775, novelty: 4.769)
+
+8 ingredients total : 
+ - 4g with whole fruit and dairy fruit smoothie
+ - 2g whipped cream
+ - 3g white onions
+ - 15g light butter
+ - 11g honey butter
+ - 52g rice flour
+ - 11g peach nectar
+ - 1g alfredo sauce
+
+Nutrients:
+ - Protein : 4g
+ - Sugars, total including NLEA : 7g
+ - Fiber, total dietary : 1mg
+ - Sodium, Na : 10g
+ - Cholesterol : 3g
+ - Sugars, Total : 2mg
+
+Bakingroles:
+ - Base/Flour : rice flour
+ - Fat/Oil/Butter : light butter
+ - Sweetener : honey butter, peach nectar
+ - Binder/Egg/Fruit/Yoghurt : with whole fruit and dairy fruit smoothie
+ - Leavener/Rising/Soda : 
+ - Flavorings : white onions
+ - Add-ins : with whole fruit and dairy fruit smoothie, whipped cream, white onions, alfredo sauce
+ - Seasoning : alfredo sauce
+ - Texture Enhancers : whipped cream, alfredo sauce
+ - Decorations/Toppings : whipped cream
+ - Liquid : with whole fruit and dairy fruit smoothie, whipped cream, alfredo sauce
