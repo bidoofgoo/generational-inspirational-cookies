@@ -2,324 +2,114 @@ const assert = require('assert');
 const { log } = require('console');
 const fs = require('fs');
 
+const Amount = require('./Amount.js');
+const Recipe = require('./Recipe.js');
+// //let test = new Recipe2();
+// import Recipe from './Recipe.js'
+
 const data_path = 'data'
 const dataResults_path = data_path + '/results';
 
-
 /**
- * [Returns a set based on its given parameter but with 1 random element dropped]
- *
- * @return  {[Set]}  [New set, based off parameter set but with 1 random element dropped is returned]
+ * MAIN OBJECT OF THE ALGORITHM.
+ * @type {Object}
  */
-function deleteRandomElementFromSet(set) {
-
-	let returnSet = new Set();
-
-	let originalsize = set.size;
-
-	let index = Math.floor(Math.random() * set.size);
-	let original = Array.from(set);
-
-	for (let i=0; i < set.size; i++) {
-
-		if (i !== index) returnSet.add(original[i]);
-
-	}
-
-	assert(originalsize > returnSet.size, `The returning set size ${returnSet.size} should be less than ${originalsize}`)
-
-	return returnSet;
-
-}
-
-/**
- * [Returns a random item from a set]
- *
- * @return  {[???]}  [returns one of whatever the set is filled with]
- */
-function getRandomItemFromSet(set) {
-    let items = Array.from(set);
-    return items[Math.floor(Math.random() * items.length)];
-}
-
-
-function ttt (set) {
-
-	assert(set instanceof Set, "Argument must be a Set.");
-
-}
-
-
-/**
- * An amount of nutrient given by the databases
- * and expressed within units.
- */
-class Amount {
+const population = {
 
 	/**
-	 * All units derived from the original databases.
-	 * @type {[string]}
+	 * Individuals of the population.
 	 */
-	static units = fs
-	.readFileSync(dataResults_path + '/units.txt')
-	.toString()
-	.split(/\r?\n/);
+	recipes: [],
 
 	/**
-	 * Constructor already agreeing the unit with the hardcoded standard.
-	 * @param  {number} amount [amount]
-	 * @param  {string} unit  Name of the unit.
+	 * Size of the population/generation.
 	 */
-	constructor(amount=0, unit='µg') {
+	size: 250,
 
-		assert(typeof amount === 'number', 'Amount argument must be a number.');
-		assert(amount !== NaN, 'Amount cannot be NOT A NUMBER (but NaN is a number LOL)...');
-		assert(typeof amount === 'number', 'Amount argument must be a number.');
-		assert(typeof unit === 'string', 'Unit must be in the form of a string.');
-		assert(Amount.units.indexOf(unit) > -1, 'Unknown unit.');
+	generations: 1000,
 
-		this.amount = amount;
-		this.unit = unit;
-
-		this.agree();
-
-	}
+	maxMutations: 500, 
 
 	/**
-	 * Agree the Amount's unit to the hardcoded standard.
-	 */
-	agree() {
-
-		switch (this.unit) {
-
-		case 'g':
-			this.amount *= 100;
-			this.unit = 'µg';
-			break;
-
-		case 'mg':
-			this.amount *= 10;
-			this.unit = 'µg';
-			break;
-
-		case 'kcal':
-			this.amount *= 4.184;
-			this.unit = 'kJ';
-			break;
-
-		case 'IU': // International Unit
-			break;
-
-		case 'sp gr': // specific gravity / relative density
-			break;
-
-		}
-
-	}
-
-	/**
-	 * Add another Amount object.
-	 * @param {Amount} amount [description]
-	 */
-	add(amount) {
-
-		assert(amount instanceof Amount, 'amount must be of type Amount.');
-		assert(this.unit === amount.unit, `the added amount (in ${amount.unit}) must be of the same unit (${this.unit})`);
-
-		this.amount += amount.amount;
-
-		return this;
-
-	}
-
-
-	normalize(initialTotalAmount, normalizedTotalAmount) {
-
-		assert(initialTotalAmount instanceof Amount, 'initialAmount must be of type Amount.')
-		assert(normalizedTotalAmount instanceof Amount, 'normalizedAmount must be of type Amount.')
-		assert(initialTotalAmount.unit === normalizedTotalAmount.unit, 'Both amounts must have the same unit!')
-
-		let newAmount = this.amount * normalizedTotalAmount.amount / initialTotalAmount.amount;
-
-		this.amount = newAmount;
-
-		return this;
-
-	}
-
-	toString() {
-		if(this.unit == "µg") return `${Math.round(this.amount/100)}g`;
-		return this.amount
-	}
-
-	copy() {
-		return new Amount(this.amount, this.unit);
-	}
-
-}
-
-/**
- * [Recipe description]
- */
-class Recipe {
-
-	/**
-	 * Nutrients are normalized per 100g of the cookie for the doe
-	 * (or how much does the doe weights!)
-	 */
-	static portion = new Amount(100, 'g');
-
-	/**
-	 * This is the cookie we want our cookies to approach
-	 * by its nutrients.
+	 * Initialize population.
 	 * 
-	 * Original has nutrients for 45 g (one cookie).
-	 */
-	static cookiePrototypeData = this.normalizeCookiePrototype(JSON.parse(fs.readFileSync(data_path + '/red_velvet_nutrients.json')));
-
-	/**
-	 * All ingredients assembled from 'food' databases
-	 * (made by 'knowledgebase.js').
-	 */
-	static ingredients = this.filterUnusedData(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles3.json')));
-
-	/**
-	 * All possible roles an ingredient can serve
-	 * within the process of cooking a cookie.
-	 */
-	static bakingroles = {
-		"Base/Flour" : new Amount(25, "g"),
-		"Fat/Oil/Butter" : new Amount(15, "g"),
-		"Sweetener" : new Amount(15, "g"),
-		"Binder/Egg/Fruit/Yoghurt" :new Amount(10, "g"),
-		"Leavener/Rising/Soda" : new Amount(5, "g"),
-		"Flavorings": new Amount(5, "g"),
-		"Add-ins" : new Amount(10, "g"),
-		"Seasoning": new Amount(2, "g"),
-		"Texture Enhancers": new Amount(5, "g"),
-		"Decorations/Toppings": new Amount(3, "g"),
-		"Liquid": new Amount(5, "g")};
-
-
-	/**
-	 * Parse recipe for the prototype cookie.
+	 * Fills the .recipes array with Recipes.
 	 *
-	 * @param   {[type]}  cookiePrototype  [cookiePrototype description]
-	 *
-	 * @return  {[type]}                   [return description]
+	 * @return  {population}  [return description]
 	 */
-	static normalizeCookiePrototype(cookiePrototype) {
+	initialize: function () {
 
-		// calculate initial total amount
-		let initialTotalAmount = new Amount();
+		for (let i=0; i<this.size; i++) {
 
-		// change 'amount' and 'unit' keys to Amount instance.
-		for (let nutrient in cookiePrototype) {
-
-			let amount = new Amount(cookiePrototype[nutrient].amount, cookiePrototype[nutrient].unit);
-			
-			initialTotalAmount.add(amount);
-			
-			cookiePrototype[nutrient].amount = amount;
-			delete cookiePrototype[nutrient].unit; // not needed anymore.
+			let recipe = new Recipe();
+			recipe.randomizeInitialIngredients();
+			this.recipes.push(recipe);
 
 		}
 
-		// calculate post-normalization total amount for assertion
-		let finalTotalAmount = new Amount();
-
-		// normalize amounts to one portion!
-		for (let nutrient in cookiePrototype) {
-
-			cookiePrototype[nutrient].amount.normalize(initialTotalAmount, this.portion);
-
-			finalTotalAmount.add(cookiePrototype[nutrient].amount);
-g
-		}
-
-		assert(
-			this.portion.amount === finalTotalAmount.amount,
-			`The current portion ${finalTotalAmount} does not sum to to ${this.portion} normalized portion amount.`)
-
-		return cookiePrototype
-
-	}
+		return this;
+		
+	},
 
 	/**
-	 * Remove ~IN PLACE~ all the nutrients that are not mentioned in cookiePrototypeData.
-	 * In practice, there are some 'classes' of nutrients aggregating other classes
-	 * i.e. 'TotalCarbohydrates' sum up all the nutrients that are classified as carbs
-	 * (by the dataset creators, not us).
+	 * Create new generation of Recipes.
+	 * 
+	 * @param   {int}      size        size of the population
+	 * @param   {[Recipe]} population  array of Recipes.
+	 * 
+	 * @return  {[Recipe]} crossovered and mutated population.
 	 */
-	static filterUnusedData(ingredients) {
+	generateRecipes: function(size, population) {
 
-		// get a set of all nutrients mentioned in cookiePrototypeData.
-		let nutrientsUsed = new Set();
+		let R = []; // generated recipes
+	
+		while (R.length < size) {
+	
+			// select two recipes based on fitness:
+			let r1 = this.selectRecipe(population);
+			let r2 = this.selectRecipe(population);
+	
+			// crossover
+			let r = this.crossover(r1, r2);	// crossover
 
-		// filter out ingredients which do not have one of the main ingredient aliases.
-		for (let nutrientName in this.cookiePrototypeData) {
-
-			for (let nutrientAlias of this.cookiePrototypeData[nutrientName].innutrients) {
-				nutrientsUsed.add(nutrientAlias);
-			}
-
+			// mutation
+			let mutateAmount = Math.floor(Math.random() * 20)
+			for (let i=0; i<mutateAmount; i++) r.mutate();
+	
+			R.push(r);
+	
 		}
+	
+		this.evaluateRecipes(R);
+	
+		return R;
+	
+	},
 
-		// filter out nutrients without main nutrients.
-		for (let ingredient of ingredients) {
+	evaluateRecipes: function(recipes){
 
-			ingredient.nutrients = ingredient.nutrients.filter(nutrient => nutrientsUsed.has(nutrient.name))
-		
+		let ingredientsInPop = Recipe.getIngredientAmountsForPopulation(recipes)
+
+		for (let recipe of recipes) recipe.calcFitness(ingredientsInPop, recipes.length);
+
+	},
+
+	selectRecipe: function (recipes) {
+
+		// calculate the fitness
+		let sum = this.recipes.reduce((a, r) => a + r.fitness, 0);
+		let fitness = Math.floor(Math.random() * sum);
+	
+		// cheap randomisation using hash table unpredictability.
+		for (const recipe of recipes) {
+			if (fitness < recipe.fitness) return recipe;
+			fitness -= recipe.fitness;
 		}
-
-		ingredients = ingredients.filter(ingredient => ingredient.name.split(" ").length < 3);
-
-		// filter out some categories...
-		let overarchingThemesToDrop = [
-			'sandwich',
-			'dish',
-			'burger',
-			"energy drink",
-			"dressing",
-			"cookie",
-			"formula",
-			"NFS",
-			"NS"
-		]
-
-		for (let dropping of overarchingThemesToDrop) {
-			ingredients = ingredients.filter(ingredient => !ingredient.category.includes(dropping));
-			ingredients = ingredients.filter(ingredient => !ingredient.name.includes(dropping));
-			ingredients = ingredients.filter(ingredient => !ingredient.tags.join(", ").includes(dropping));
-		}
-		
-		let ingredientCategoriesToDrop = ["Restaurant Foods",
-		"Pizza","Soups","Egg rolls, dumplings, sushi",
-		"Eggs and omelets", "Fried rice and lo/chow mein",
-		"Stir-fry and soy-based sauce mixtures", "Doughnuts, sweet rolls, pastries",
-		"Bagels and English muffins", "Biscuits, muffins, quick breads", "Pancakes, waffles, French toast",
-		"Cakes and pies", "Cereal bars", "Nutrition bars"
-		];
-
-		for (let dropping of ingredientCategoriesToDrop) {
-			ingredients = ingredients.filter(ingredient => !(ingredient.category == dropping));
-		}
-
-		return ingredients;
-
-	}
-
-	static getRandomIngredient() {
-
-		let randomId = Math.floor(this.ingredients.length * Math.random());
-		let ingredient = {...this.ingredients[randomId]};
-
-		// add 'amount' property to know how much of ingredient we randomly add.
-		ingredient.amount = new Amount(this.portion.amount * Math.random());
-
-		return ingredient;
-
-	}
+	
+		// emergency: return last if no one is fit enough.
+		return recipes[recipes.length - 1];
+	
+	},
 
 	/**
 	 * [Crossover two recipes into a new child recipe]
@@ -329,7 +119,7 @@ g
 	 *
 	 * @return  {[Recipe]}      [child]
 	 */
-	static crossover(r1, r2){
+	crossover : function(r1, r2){
 
 		let newRecipe = new Recipe();
 
@@ -364,425 +154,6 @@ g
 
 		return newRecipe;
 
-	}
-
-
-	constructor () {
-
-		this.ingredients = new Set(); // what about weight???
-		this.fitness = 0;
-		this.fitnessBakingRole = 0;
-		this.fitnessPrototypeCookie = 0;
-		this.novelty = 0;
-
-	}
-
-
-	randomizeInitialIngredients() {
-
-		while (this.ingredients.size < 10) {
-
-			this.ingredients.add(Recipe.getRandomIngredient());
-
-		}
-
-		this.normalizeIngredients();
-
-		//this.calcNutrients();
-
-		this.amountPerCategory // R E M O V E
-
-	}
-
-
-	totalAmount() {
-
-		return Array.from(this.ingredients).reduce((amount, ingredient) => {
-
-			amount.add(ingredient.amount)
-
-			return amount;
-		
-		}, new Amount(0, 'g'));
-
-	}
-
-	/**
-	 * Normalize ingredients' amounts to a recipe portion.
-	 */
-	normalizeIngredients() {
-
-		assert(this.ingredients.size > 0,
-			`The recipe has no ingredients, nothing to normalize?`)
-		
-		let total = this.totalAmount();
-
-
-
-		// new amount = portion amount * given ingredient amount / total amount.
-		for (let ingredient of this.ingredients) {
-
-			ingredient.amount = new Amount(Recipe.portion.amount * ingredient.amount.amount / total.amount);
-
-		}
-
-		let currentAmount = Math.round(this.totalAmount().amount);
-		let normalizedAmount = Math.round(Recipe.portion.amount);
-
-		assert(
-			currentAmount === normalizedAmount,
-			`The current portion ${currentAmount} does not sum to to ${normalizedAmount} normalized portion amount.`)
-		
-	}
-
-
-	get nutrients() {
-		// This is incorrect for now
-		// Only after the ingredients have been normalized
-
-		if(this.totalNutrients != null) return this.totalNutrients;
-		this.totalNutrients = {};
-
-		for (let ingredient of this.ingredients) {
-
-			for (let nutrient of ingredient.nutrients) {
-
-				let amount = new Amount(nutrient.amount, nutrient.unit);
-				let portion = Recipe.portion.amount;
-				let ingredAmount = ingredient.amount.amount;
-
-				// normalization
-				amount.amount = (amount.amount * ingredAmount) / portion;
-				
-				if (nutrient.name in this.totalNutrients) {
-
-					this.totalNutrients[nutrient.name].add(amount);
-
-				} else {
-
-					this.totalNutrients[nutrient.name] = amount;
-
-				}
-			}
-
-		}
-
-		return this.totalNutrients;
-
-	}
-
-	get amountPerCategory() {
-
-		let amounts = {}
-
-		for (let role in Recipe.bakingroles) {
-			
-			amounts[role] = new Amount();
-
-		}
-
-		for (let ingredient of this.ingredients) {
-
-			for (let role of ingredient.bakingrole) {
-
-				amounts[role].add(ingredient.amount);
-
-			}
-
-		}
-
-		return amounts;
-
-	}
-
-	calcFitnessBakingRole(){
-
-		let totalfitness = 0;
-		// FITNESS I – by amount per category
-		let amountPerCategory = this.amountPerCategory
-
-		// refer to Recipe.bakingroles for the 'expected' amount
-		let differencePerCategory = {}
-
-		for (let category in Recipe.bakingroles) {
-
-			let expectedAmount = Recipe.bakingroles[category].amount;
-			let currentAmount = amountPerCategory[category].amount;
-
-			differencePerCategory[category] = Math.max(1 - Math.abs(expectedAmount - currentAmount) / (expectedAmount * 2), 0);
-
-			totalfitness += differencePerCategory[category];
-
-		}
-
-		this.fitnessBakingRole = totalfitness;
-	}
-
-	calcFitnessPrototypeCookie(){
-		// FITNESS II – by similarity to prototype cookie.
-		let totalfitness = 0;
-
-		let differencePerNutrient = {}
-
-		for (let nutrient in Recipe.cookiePrototypeData) {
-
-			if (nutrient in this.nutrients) {
-
-				let expectedAmount = Recipe.cookiePrototypeData[nutrient].amount.amount;
-				let currentAmount = this.nutrients[nutrient].amount;
-
-				differencePerNutrient[nutrient] = Math.max(1 - Math.abs(expectedAmount - currentAmount) / (expectedAmount * 2), 0);
-
-				totalfitness += differencePerNutrient[nutrient];
-
-			} else {
-
-				totalfitness /= 0.666;
-
-			}
-				
-		}
-
-		this.fitnessPrototypeCookie = totalfitness;
-	}
-
-	static getIngredientAmountsForPopulation(population){
-		// First see how many of what ingredient of this recipe exists in the population. Then based on that number;
-		let ingredientsInPop = {}
-
-		for (let recipe of population) {
-
-			for (let ingredInRecipe of recipe.ingredients) {
-
-				let ingredName = ingredInRecipe.tags.join(" ") + " " + ingredInRecipe.name;
-
-				if(ingredientsInPop[ingredName] == null){
-					ingredientsInPop[ingredName] = 0;	
-				} 
-
-				ingredientsInPop[ingredName] = ingredientsInPop[ingredName]+1;
-
-			}
-		}
-
-		//console.log(ingredientsInPop);
-		
-		return ingredientsInPop;
-	}
-
-	calcNovelty(ingredientsInPop, popSize) {
-
-		let totalNovelty = 0;
-
-		//console.log(ingredientsInPop);
-
-		for (let ingred of this.ingredients) {
-
-			let ingredName = ingred.tags.join(" ") + " " + ingred.name;
-
-			if (ingredName in ingredientsInPop) {
-				totalNovelty += (1 - (ingredientsInPop[ingredName] / popSize)) 
-			}
-		}
-
-		this.novelty = 1 + (totalNovelty / this.ingredients.size * 5)
-	}
-
-	calcFitness(ingredientsInPop, popSize){
-
-		this.calcFitnessBakingRole();
-
-		this.calcFitnessPrototypeCookie();
-
-		this.calcNovelty(ingredientsInPop, popSize);
-
-		this.fitness = this.fitnessBakingRole * this.fitnessPrototypeCookie * this.novelty;
-
-	}
-	
-	/**
-	 * [mutates the current recipe by either removing, adding 
-	 * ,replacing one of the ingredients]
-	 *
-	 */
-	mutate() {
-		
-		let randint = Math.floor(Math.random() * 6);
-		// let additionalCheck = Math.random > 0.5;
-
-		// let curingreds = new Set(this.ingredients)
-
-		let randIngred = Recipe.getRandomIngredient();
-
-		let ingr = getRandomItemFromSet(this.ingredients);
-
-		// console.log(this.ingredients)
-
-		switch (randint) {
-			
-			case 0:
-				if (this.ingredients.size > 1) {
-					this.ingredients = deleteRandomElementFromSet(this.ingredients);
-				} //finish
-				break;
-
-			case 1:
-				this.ingredients.add(randIngred);
-				break;
-
-			case 2:
-				if (this.ingredients.size > 0) {
-					this.ingredients = deleteRandomElementFromSet(this.ingredients);
-				}
-				this.ingredients.add(randIngred);
-				break;
-			case 3:
-				ingr.amount.amount = ingr.amount.amount * (1 + Math.random() * 9);
-				break;
-			case 4:
-				ingr.amount.amount = ingr.amount.amount * (0.1 + Math.random() * 0.9);
-				if (ingr.amount.amount < new Amount(0.5, "g").amount && this.ingredients.size > 1)
-				break;
-			default:
-				break;
-		}
-
-		this.normalizeIngredients()
-
-	}
-
-	ingredientString(){
-		let beginStr = "";
-		let ingredientNames = Array.from(this.ingredients).reduce((ingredients, ingredient) => {
-			
-			ingredients.push(" - " + ingredient.amount.toString() + " " + (ingredient.tags.length > 0?ingredient.tags[0] + " ":"")+ ingredient.name)
-
-			return ingredients;
-
-		}, []);
-
-		beginStr += ingredientNames.join("\n");
-
-		return beginStr
-	}
-
-	nutrientString(){
-
-	}
-
-
-	toString() {
-
-		let beginStr = `Cookie Recipe\nFitness: ${this.fitness} (roles: ${this.fitnessBakingRole}, prototype: ${this.fitnessPrototypeCookie}, novelty: ${this.novelty})\n${this.ingredients.size} ingredients total : \n`;
-		
-		beginStr += this.ingredientString();
-
-		return beginStr;
-	}
-	
-}
-
-
-/**
- * MAIN OBJECT OF THE ALGORITHM.
- * @type {Object}
- */
-const population = {
-
-	recipes: [],
-
-	size: 500,
-
-	history: [],
-
-	/**
-	 * Initialize population e
-	 *
-	 * @return  {[type]}  [return description]
-	 */
-	initialize: function () {
-
-		for (let i=0; i<this.size; i++) {
-
-			let recipe = new Recipe();
-			recipe.randomizeInitialIngredients();
-			this.recipes.push(recipe);
-
-		}
-
-		return this;
-		
-	},
-
-	generateRecipes: function(size, population) {
-
-		let R = []; // generated recipes
-	
-		while (R.length < size) {
-	
-			// select two recipes based on fitness:
-			let r1 = this.selectRecipe(population);
-			let r2 = this.selectRecipe(population);
-	
-			// apply modifications
-			let r = Recipe.crossover(r1, r2);	// crossover
-
-			let mutateAmount = Math.floor(Math.random() * 10)
-			for (let i = 0; i < mutateAmount; i++) {
-				r.mutate();							// mutation
-			}
-	
-			R.push(r);
-	
-		}
-	
-		this.evaluateRecipes(R);
-	
-		return R;
-	
-	},
-
-	selectRecipe: function (recipes) {
-
-		// calculate the fitness
-		let sum = this.recipes.reduce((a, r) => a + r.fitness, 0);
-		let fitness = Math.floor(Math.random() * sum);
-	
-		// cheap randomisation using hash table unpredictability.
-		for (const recipe of recipes) {
-			if (fitness < recipe.fitness) return recipe;
-			fitness -= recipe.fitness;
-		}
-	
-		// emergency: return last if no one is fit enough.
-		return recipes[recipes.length - 1];
-	
-	},
-
-	evaluateRecipes: function(recipes){
-
-		let ingredientsInPop = Recipe.getIngredientAmountsForPopulation(recipes)
-
-		for (let recipe of recipes) {
-			recipe.calcFitness(ingredientsInPop, recipes.length);
-		}
-	},
-
-	evolve: function (generations) {
-
-		for (let index = 0; index < generations; index++) {
-			
-			let R = this.generateRecipes(this.size, this.recipes);
-			this.recipes = this.selectPopulation(this.recipes, R);
-
-			console.log('GENERATION ' + index + ": Max fitness: " + this.recipes[0].fitness);
-
-			//console.log(this.recipes[0]);
-			
-		}
-
-		return this;
-	
 	},
 
 	selectPopulation: function(P /* Already sorted!!! */, R) {
@@ -800,23 +171,68 @@ const population = {
 	
 	},
 
-	report: function() {
+	evolve: function (generations) {
 
-		console.log("\nReport!:\n");
+		for (let index = 0; index < generations; index++) {
+			
+			let R = this.generateRecipes(this.size, this.recipes);
+			this.recipes = this.selectPopulation(this.recipes, R);
+
+			console.log(`GENERATION ${index}: Max fitness: ${this.recipes[0].fitness} (novelty ${this.recipes[0].novelty}) `);
+
+			//console.log(this.recipes[0]);
+			
+		}
+
+		return this;
+	
+	},
+
+	report: function(toReport) {
 
 		assert(this.recipes.length === this.size, `Got ${this.recipes.length} recipes, expected ${this.size}...`);
 
-		for (let i=0; i<3; i++) {
+		console.log("\nReport!:\n");
+
+		for (let i=0; i<toReport; i++) {
 
 			let recipe = this.recipes[i]
 			console.log(recipe.toString() + "\n");
 			
 		}
+
+		return this;
+	},
+
+	export: function(toExport){
+
+		console.log("\nExport!:\n");
+
+		let currentdate = new Date(); 
+		let datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + "-"  
+                + currentdate.getHours() + "-"  
+                + currentdate.getMinutes() + "-" 
+                + currentdate.getSeconds();
+
+		for (let i=0; i<toExport; i++) {
+
+			let beginStr = `Generated cookie no ${i+1} - After ${population.generations} generations with a population size of ${population.size} and a mutation rate of ${population.maxMutations}.\n\n`
+
+			let recipe = this.recipes[i]
+			fs.writeFileSync("cookie_exports\\" + datetime + "-Cookie" + (i + 1) + ".txt", beginStr + recipe.toString())
+			
+		}
+
+		return this;
 	}
+
 }
 
 population
 .initialize()
-.evolve(1000)
-.report();
+.evolve(population.generations)
+.report(3)
+.export(5);
 // console.log('\nEvolution TURNED OFF.\n')
