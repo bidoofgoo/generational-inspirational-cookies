@@ -149,6 +149,7 @@ class Amount {
 
 	toString() {
 		if(this.unit == "µg") return `${Math.round(this.amount/100)}g`;
+		return this.amount
 	}
 
 	copy() {
@@ -180,27 +181,24 @@ class Recipe {
 	 * All ingredients assembled from 'food' databases
 	 * (made by 'knowledgebase.js').
 	 */
-	static ingredients = this.filterUnusedData(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles2.json')));
+	static ingredients = this.filterUnusedData(JSON.parse(fs.readFileSync(dataResults_path + '/ingredients_roles3.json')));
 
 	/**
 	 * All possible roles an ingredient can serve
 	 * within the process of cooking a cookie.
 	 */
 	static bakingroles = {
-
-		"Base" : new Amount(25, "g"),
-		"Fat" : new Amount(15, "g"),
+		"Base/Flour" : new Amount(25, "g"),
+		"Fat/Oil/Butter" : new Amount(15, "g"),
 		"Sweetener" : new Amount(15, "g"),
-		"Binding Agent" :new Amount(10, "g"),
-		"Leavener/Rising agent" : new Amount(5, "g"),
+		"Binder/Egg/Fruit/Yoghurt" :new Amount(10, "g"),
+		"Leavener/Rising/Soda" : new Amount(5, "g"),
 		"Flavorings": new Amount(5, "g"),
 		"Add-ins" : new Amount(10, "g"),
 		"Seasoning": new Amount(2, "g"),
 		"Texture Enhancers": new Amount(5, "g"),
 		"Decorations/Toppings": new Amount(3, "g"),
-		"Liquid": new Amount(5, "g")
-
-	};
+		"Liquid": new Amount(5, "g")};
 
 
 	/**
@@ -274,9 +272,38 @@ class Recipe {
 		
 		}
 
+		ingredients = ingredients.filter(ingredient => ingredient.name.split(" ").length < 3);
+
 		// filter out some categories...
-		ingredients = ingredients.filter(ingredient => !ingredient.category.includes('sandwich'));
-		ingredients = ingredients.filter(ingredient => ingredient.category !== 'Liquid');
+		let overarchingThemesToDrop = [
+			'sandwich',
+			'dish',
+			'burger',
+			"energy drink",
+			"dressing",
+			"cookie",
+			"formula",
+			"NFS",
+			"NS"
+		]
+
+		for (let dropping of overarchingThemesToDrop) {
+			ingredients = ingredients.filter(ingredient => !ingredient.category.includes(dropping));
+			ingredients = ingredients.filter(ingredient => !ingredient.name.includes(dropping));
+			ingredients = ingredients.filter(ingredient => !ingredient.tags.join(", ").includes(dropping));
+		}
+		
+		let ingredientCategoriesToDrop = ["Restaurant Foods",
+		"Pizza","Soups","Egg rolls, dumplings, sushi",
+		"Eggs and omelets", "Fried rice and lo/chow mein",
+		"Stir-fry and soy-based sauce mixtures", "Doughnuts, sweet rolls, pastries",
+		"Bagels and English muffins", "Biscuits, muffins, quick breads", "Pancakes, waffles, French toast",
+		"Cakes and pies", "Cereal bars", "Nutrition bars"
+		];
+
+		for (let dropping of ingredientCategoriesToDrop) {
+			ingredients = ingredients.filter(ingredient => !(ingredient.category == dropping));
+		}
 
 		return ingredients;
 
@@ -343,6 +370,9 @@ class Recipe {
 	constructor () {
 
 		this.ingredients = new Set(); // what about weight???
+		this.fitness = 0;
+		this.fitnessBakingRole = 0;
+		this.fitnessPrototypeCookie = 0;
 		this.novelty = 0;
 
 	}
@@ -465,23 +495,9 @@ class Recipe {
 
 	}
 
-
-	get fitness() {	
+	calcFitnessBakingRole(){
 
 		let totalfitness = 0;
-
-		// let incurrentcookie = {};
-		
-		// assess baking roles of the ingredients
-		// for (let ingredient of this.ingredients) {
-		// 	for (let role of ingredient.bakingrole) {
-		// 		if(!(role in incurrentcookie)) incurrentcookie[role] = 0;
-		// 		if(incurrentcookie[role] < Recipe.bakingroles[role])totalfitness+= 10;
-		// 		else totalfitness = Math.max(totalfitness - 10, 0);
-		// 		incurrentcookie[role] += 1;
-		// 	}
-		// }
-
 		// FITNESS I – by amount per category
 		let amountPerCategory = this.amountPerCategory
 
@@ -499,7 +515,12 @@ class Recipe {
 
 		}
 
+		this.fitnessBakingRole = totalfitness;
+	}
+
+	calcFitnessPrototypeCookie(){
 		// FITNESS II – by similarity to prototype cookie.
+		let totalfitness = 0;
 
 		let differencePerNutrient = {}
 
@@ -522,26 +543,60 @@ class Recipe {
 				
 		}
 
-		return totalfitness;
-		
+		this.fitnessPrototypeCookie = totalfitness;
 	}
 
-	calcNovelty(population) {
-		
+	static getIngredientAmountsForPopulation(population){
 		// First see how many of what ingredient of this recipe exists in the population. Then based on that number;
 		let ingredientsInPop = {}
 
-		for (let ingredient of this.ingredients) {
+		for (let recipe of population) {
 
-			if(!ingredient.name in ingredientsInPop)ingredientsInPop[ingredient.name]=0;
+			for (let ingredInRecipe of recipe.ingredients) {
 
-			for (let recipe of population) {
+				let ingredName = ingredInRecipe.tags.join(" ") + " " + ingredInRecipe.name;
 
-				if(recipe.name == ingredient.name) ingredientsInPop[ingredient.name]++;
+				if(ingredientsInPop[ingredName] == null){
+					ingredientsInPop[ingredName] = 0;	
+				} 
+
+				ingredientsInPop[ingredName] = ingredientsInPop[ingredName]+1;
 
 			}
 		}
+
+		//console.log(ingredientsInPop);
 		
+		return ingredientsInPop;
+	}
+
+	calcNovelty(ingredientsInPop, popSize) {
+
+		let totalNovelty = 0;
+
+		//console.log(ingredientsInPop);
+
+		for (let ingred of this.ingredients) {
+
+			let ingredName = ingred.tags.join(" ") + " " + ingred.name;
+
+			if (ingredName in ingredientsInPop) {
+				totalNovelty += (1 - (ingredientsInPop[ingredName] / popSize)) 
+			}
+		}
+
+		this.novelty = 1 + (totalNovelty / this.ingredients.size * 5)
+	}
+
+	calcFitness(ingredientsInPop, popSize){
+
+		this.calcFitnessBakingRole();
+
+		this.calcFitnessPrototypeCookie();
+
+		this.calcNovelty(ingredientsInPop, popSize);
+
+		this.fitness = this.fitnessBakingRole * this.fitnessPrototypeCookie * this.novelty;
 
 	}
 	
@@ -586,6 +641,7 @@ class Recipe {
 				break;
 			case 4:
 				ingr.amount.amount = ingr.amount.amount * (0.1 + Math.random() * 0.9);
+				if (ingr.amount.amount < new Amount(0.5, "g").amount && this.ingredients.size > 1)
 				break;
 			default:
 				break;
@@ -595,20 +651,31 @@ class Recipe {
 
 	}
 
-
-	toString() {
-
-		let beginStr = `Cookie Recipe - Fitness: ${this.fitness} - Ingredients: ${this.ingredients.size} - `;
-		
+	ingredientString(){
+		let beginStr = "";
 		let ingredientNames = Array.from(this.ingredients).reduce((ingredients, ingredient) => {
 			
-			ingredients.push(ingredient.amount.toString() + " " + ingredient.name)
+			ingredients.push(" - " + ingredient.amount.toString() + " " + (ingredient.tags.length > 0?ingredient.tags[0] + " ":"")+ ingredient.name)
 
 			return ingredients;
 
 		}, []);
 
-		beginStr += ingredientNames.join(", ");
+		beginStr += ingredientNames.join("\n");
+
+		return beginStr
+	}
+
+	nutrientString(){
+
+	}
+
+
+	toString() {
+
+		let beginStr = `Cookie Recipe\nFitness: ${this.fitness} (roles: ${this.fitnessBakingRole}, prototype: ${this.fitnessPrototypeCookie}, novelty: ${this.novelty})\n${this.ingredients.size} ingredients total : \n`;
+		
+		beginStr += this.ingredientString();
 
 		return beginStr;
 	}
@@ -624,7 +691,7 @@ const population = {
 
 	recipes: [],
 
-	size: 150,
+	size: 500,
 
 	history: [],
 
@@ -659,9 +726,11 @@ const population = {
 	
 			// apply modifications
 			let r = Recipe.crossover(r1, r2);	// crossover
-			r.mutate();							// mutation
-			r.mutate();							// mutation
-			r.mutate();							// mutation
+
+			let mutateAmount = Math.floor(Math.random() * 10)
+			for (let i = 0; i < mutateAmount; i++) {
+				r.mutate();							// mutation
+			}
 	
 			R.push(r);
 	
@@ -670,17 +739,6 @@ const population = {
 		this.evaluateRecipes(R);
 	
 		return R;
-	
-	},
-
-	evaluateRecipes: function (recipes) {
-
-		for (const recipe of recipes) {
-			
-			//recipe.fitness;
-			//recipe.calcNovelty();
-
-		}
 	
 	},
 
@@ -699,6 +757,15 @@ const population = {
 		// emergency: return last if no one is fit enough.
 		return recipes[recipes.length - 1];
 	
+	},
+
+	evaluateRecipes: function(recipes){
+
+		let ingredientsInPop = Recipe.getIngredientAmountsForPopulation(recipes)
+
+		for (let recipe of recipes) {
+			recipe.calcFitness(ingredientsInPop, recipes.length);
+		}
 	},
 
 	evolve: function (generations) {
@@ -742,8 +809,7 @@ const population = {
 		for (let i=0; i<3; i++) {
 
 			let recipe = this.recipes[i]
-			console.log(recipe.toString());
-			console.log();
+			console.log(recipe.toString() + "\n");
 			
 		}
 	}
@@ -751,6 +817,6 @@ const population = {
 
 population
 .initialize()
-.evolve(500)
+.evolve(1000)
 .report();
 // console.log('\nEvolution TURNED OFF.\n')
