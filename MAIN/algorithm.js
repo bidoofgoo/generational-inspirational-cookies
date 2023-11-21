@@ -236,7 +236,7 @@ class Recipe {
 			cookiePrototype[nutrient].amount.normalize(initialTotalAmount, this.portion);
 
 			finalTotalAmount.add(cookiePrototype[nutrient].amount);
-
+g
 		}
 
 		assert(
