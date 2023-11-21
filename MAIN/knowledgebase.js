@@ -19,17 +19,17 @@ const YAML = require('yaml');
 const LOG = false;
 
 const input_dir = '../data'
-const output_directory = '../data/results';
+const output_dir = '../data/results';
 
 const databases = {
 
 	// JSON/YAML files
 	foods: JSON.parse(fs.readFileSync(input_dir + '/food.json')).FoundationFoods,
 	foods2: JSON.parse(fs.readFileSync(input_dir + '/food2.json')).SurveyFoods,
-	cuisines: JSON.parse(fs.readFileSync(input_dir + '/cuisines.json')),
-	cocktails: YAML.parse(fs.readFileSync(input_dir + '/cocktails/cocktails.yaml', 'utf8')),
+	//cuisines: JSON.parse(fs.readFileSync(input_dir + '/cuisines.json')),
+	//cocktails: YAML.parse(fs.readFileSync(input_dir + '/cocktails/cocktails.yaml', 'utf8')),
 
-	// above but parsed
+	// same as above but parsed
 	ingredients: [],
 	categories: new Set(),
 	nutrients: new Set(),
@@ -191,62 +191,11 @@ if (LOG) {
 	console.log(databases.foods2.nutrients);
 }
 
-
-/**
- * Process cuisine database
- * This is a different database.
- *
- * TO DO: some ingredients are like 'breakfast meat as ingredient in omelet':
- *        should process it to: 'breakfast meat' (split on _as_)
- *        and create 'omelet' as a dish?
- * TO DO: check 'inputFoods' keys.
- */
-
-
-/* NOT USED
-if (LOG) {
-	console.log('* * * * * * * * * * * *');
-	console.log('*    C U I S I N E    *');
-	console.log('* * * * * * * * * * * *');
-}
-
-const ingredients = new Set();
-
-for (cuisine of databases.cuisines) {
-
-	for (ingredient of cuisine.ingredients) ingredients.add(ingredient);
-
-}
-
-if (LOG) {
-	console.log('**** CUISINE ****');
-	console.log(databases.cuisines);
-	console.log('** INGREDIENTS **');
-	console.log(ingredients);
-}
-*/
-
-/**
- * Processing cocktails database
- * Database of cokctails with:
- * - timing,
- * - taste,
- * - ingredients (array),
- * - preparation
- */
-
-/* NOT USED
-if (LOG) {
-	console.log('*** COCKTAILS ***');
-	console.log(databases.cocktails);
-}
-*/
-
 /**
  * Write the transform database results to the file.
  */
 
-fs.writeFileSync(output_directory + '/ingredients.json', JSON.stringify(databases.ingredients));
-fs.writeFileSync(output_directory + '/categories.txt', [...databases.categories].join('\n'));
-fs.writeFileSync(output_directory + '/nutrients.txt', [...databases.nutrients].join('\n'));
-fs.writeFileSync(output_directory + '/units.txt', [...databases.units].join('\n'), {encoding:'utf8'});
+fs.writeFileSync(output_dir + '/ingredients.json', JSON.stringify(databases.ingredients));
+fs.writeFileSync(output_dir + '/categories.txt', [...databases.categories].join('\n'));
+fs.writeFileSync(output_dir + '/nutrients.txt', [...databases.nutrients].join('\n'));
+fs.writeFileSync(output_dir + '/units.txt', [...databases.units].join('\n'), {encoding:'utf8'});
