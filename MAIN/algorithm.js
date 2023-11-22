@@ -28,7 +28,7 @@ const population = {
 
 	generations: 1000,
 
-	maxMutations: 500, 
+	maxMutations: 50, 
 
 	/**
 	 * Initialize population.
