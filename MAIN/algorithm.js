@@ -24,7 +24,7 @@ const population = {
 	/**
 	 * Size of the population/generation.
 	 */
-	size: 250,
+	size: 500,
 
 	generations: 1000,
 

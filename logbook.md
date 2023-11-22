@@ -86,7 +86,7 @@ The main body of `algorithm.js` is our GA implementation. We made it very much b
 4. evolve for $n$ generations.
 
 The last lines of that file contain the summary of the GA:
-```
+```js
 population
 .initialize()
 .evolve()
