@@ -18,3 +18,11 @@ To run `algorithm.js`:
 
 To run Bart classifier:
 - Python3
+
+# Genetic algorithm instructions:
+`algorithm.js` contains the folowing parameters:
+- population.size           - The size that each population has per generation.
+- population.generations    - The amount of generations for which it wil run.
+- population.maxmutations   - The maximum amount of mutations per child after combination.
+
+The algorithm saves the recipe information for the top 5 cookies from the final generation to the cookie_exports folder.
