@@ -77,42 +77,112 @@ For the main database for our GA we will be using `ingredients_roles3.json` file
 
 # GENETIC ALGORITHM
 
-`algorithm.js` is the main file with our GA implementation.
+## Overview
 
-The `knowledgebase.js` provides a way of combining and extracting relevant data for the Foundation Foods and FNDDS.
+The main body of `algorithm.js` is our GA implementation. We made it very much based on the "Simple Pierre" implementation:
+1. initialize the population with `Recipes` containing random ingredients,
+2. evaluate the *fitness* of each `Recipe`,
+3. create new generation of `Recipes` applying *crossover* and *mutations* to the *fittest* `Recipes`.
+4. evolve for $n$ generations.
+
+The last lines of that file contain the summary of the GA:
+```
+population
+.initialize()
+.evolve()
+.report();
+.export();
+```
+
+The `Recipe` class is where the knowledgebase and GA meet. We import the `ingredient_roles3.json` to the class' static and filter it from items which we fought of as reduntant or harming for the aglorithm:
+- all the nutrients not used in the `red_velvet_nutrients.json`,
+- too awkward ingredients (sandwiches, restaurant dishes, energy drink etc...),
+- too awkward categories (pizza, nutrition bars etc...).
+
+`Recipe` is responsible for handling most of the interaction with our knowledgebase (e.g. picking initial ingredients) as well as for generating data important for genetic algorithm (fitness, novelty, mutation). Other important task for `Recipe` is to not only to store ingredients but also to provide normalization of their amount (we normalize to 100g).
+
+`Amount` is a helper class for handling ingredients and nutrients units conversion.
+
+## Next generation
+
+The code below (adapted from "Simple Pierre") and outlines the creation of a new generation of recipes:
+```js
+let R = []; // generated recipes
+
+while (R.length < size) {
+
+	// select two recipes based on fitness:
+	let r1 = this.selectRecipe(population);
+	let r2 = this.selectRecipe(population);
+
+	// crossover
+	let r = this.crossover(r1, r2);	// crossover
+
+	// mutation
+	let mutateAmount = Math.floor(Math.random() * 10)
+	for (let i=0; i<mutateAmount; i++) r.mutate();
+
+	R.push(r);
+
+}
+
+this.evaluateRecipes(R);
+
+return R;
+```
+
+This snippet:
+1. selects two of some of the most fit Recipes,
+2. creates their child by *crossover*,
+3. applies random amount of *mutation*,
+4. evaluates fitnesses.
+
+## Ingredients Normalization
+
+After creation of each new individual, we normalize the amount of each ingredient to produce a 100g portion of a cookie. In a similar manner, we normalize _prototype cookie_'s nutrients amount.
+
+## Fitness
+
+We thought of the the fitness to be comprised of the following three components:
+1. _baking role typicality_: regarding amount of ingredients per baking role, approach the same proportions as in an average cookie (according to ChatGPT) (see `Recipe`'s `static bakingroles`).
+2. _prototype cookie nutrients resemblance_: the recipe's nutrients should resemble as much as possible nutrients of the _prototype cookie_ (red velvet).
+3. novelty: we include novelty within the fitness calculation. This results in getting varied recipes within the same generation (otherwise recipes tended to converge to the same ingredients).
+
+## Crossover
+
+The crossover between two fit individuals results in an individual getting a random half of ingredient types from both. If the same ingredient happens to be selected twice, their amount is added instead.
+
+## Mutation
+
+There are several patterns of mutation:
+- delete random ingredient,
+- add random ingredient,
+- swap ingredient to a random one,
+- increase amount of an ingredient,
+- decrease amount of an ingredient.
+
+## Termination criterion
+
+We generated our cookies with the following parameters:
+
+|Param|Value|
+|---|---|
+|size|500|
+|generations|1000|
+|maxMutations|50|
+
+
+# Evaluation of Creativity
+
+In order to evaluate our system, we used a peculiarity of our original unfiltered knowledgebase. As the dataset had already contained cookie-like food, we checked if the 'cookie' (or a similar product) appears itself as a prominent ingredient. This turned out to be true: in majority of the recipes generated before removal of cookie-like food from our knowledgebase, cookie-like food not only appeared, but they took a large quantities of the available ingredient space.
+
+This means, that given a food-generic database, the fittests recipes indeed converge into a cookie based on the definition of fitness we have provided.
+
+
+# AI Cookbook.
 
 
 
-
-
-
-
-Termination criterion 
-
-- 
-
-Process of presentation 
-
-Evaluation of Creativity 
-## Red velvet cake – cookie prototype
-
-## Knowledgebase for the inspiring set 
-
-initialising the inspiring set 
-
-evaluation of the recipies - fitness fun
-
-generating recipes 
-
-crossover of recipies
-
-mutation of recipies 
-
-to- do 
-
-- assigning amount to the baking role
-- fitness function comparing with velvet recipe
-- novelty fix it
 
 
 
